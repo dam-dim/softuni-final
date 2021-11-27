@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::head"></head>
+
+<body>
+    <nav th:replace="fragments/navigation::navbar"></nav>
+
+    <div class="container ">
+        <div class="row text-center">
+            <h1>Courses</h1>
+        </div>
+        <div class="row justify-content-center">
+            <hr class="w-25">
+        </div>
+
+        <section th:each="c : ${courses}">
+            <div class="row">
+                <h2 th:text="*{c.getKey()}"></h2>
+            </div>
+            <div class="row">
+                <hr>
+            </div>
+            <div class="row mb-4">
+                <div th:each="course : ${c.getValue()}" class="col-4 mb-2">
+                    <a th:href="@{/services/courses/details/{id}(id=*{course.id})}">
+                        <div class="card bg-dark text-white">
+                            <img th:src="*{course.imageUrl}" class="card-im" width="100%" height="250px" alt="...">
+                            <div class="card-img-overlay">
+                                <h3 class="card-title" th:text="*{course.name}"><b ></b></h3>
+                                <h5 th:text="*{course.description}" class="card-text p-4"></h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <footer th:replace="fragments/footer::footer"></footer>
+</body>
+</html>

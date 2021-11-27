@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::head"></head>
+<body>
+    <nav th:replace="fragments/navigation::navbar"></nav>
+
+    <div class="container">
+        <div class="row text-center">
+            <h1>Dives</h1>
+        </div>
+        <div class="row justify-content-center">
+            <hr class="w-25">
+        </div>
+
+        <section th:each="d : ${dives}">
+            <div class="row">
+                <h2 th:text="*{d.getKey()}"></h2>
+            </div>
+            <div class="row">
+                <hr>
+            </div>
+            <div class="row mb-4">
+                <div th:each="dive : ${d.getValue()}" class="col-4 mb-2">
+                    <a th:href="@{/services/dives/details/{id}(id=*{dive.id})}">
+                        <div class="card bg-dark text-white">
+                            <img th:src="*{dive.imageUrl}" class="card-im" width="100%" height="250px" alt="...">
+                            <div class="card-img-overlay">
+                                <h3 class="card-title" th:text="*{dive.type}"><b ></b></h3>
+                                <h5 th:text="*{dive.description}" class="card-text p-4"></h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer th:replace="fragments/footer::footer"></footer>
+</body>
+</html>

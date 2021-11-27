@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::head"></head>
+<body>
+    <nav th:replace="fragments/navigation::navbar"></nav>
+
+    <div class="container" th:object="${course}">
+        <div class="row text-center">
+            <h1 th:text="*{name}"></h1>
+        </div>
+        <div class="row justify-content-center">
+            <hr class="w-25">
+        </div>
+
+        <div class="row justify-content-center mb-4">
+            <div class="col">
+                <img th:src="*{imageUrl}" class="img-fluid" alt="">
+            </div>
+            <div class="col">
+                <h3><b>Level: </b> <th:block th:text="*{level}"></th:block></block></h3>
+                <h3><b>Description: </b></h3> <p th:text="*{description}"></p>
+                <!--todo: implement security-->
+                <th:block sec:authorize="hasRole('ADMIN')">
+                    <form th:action="@{/services/courses/details/{id}(id=*{id})}" th:method="POST">
+                        <input type="submit" class="btn btn-outline-danger" value="Delete">
+                    </form>
+                    <a th:href="@{/services/courses/edit/{id}(id=*{id})}" class="btn btn-outline-warning">Edit</a>
+                </th:block>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments/footer::footer"></footer>
+</body>
+</html>

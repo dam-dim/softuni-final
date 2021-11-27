@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::head">
+</head>
+<body>
+    <nav th:replace="fragments/navigation::navbar"></nav>
+
+    <div class="container mb-4 text-center">
+        <div class="row">
+            <h1>Register</h1>
+        </div>
+        <div class="row justify-content-center">
+            <hr class="w-25">
+        </div>
+        <div class="row justify-content-center">
+            <div class="col col-xxl-4 col-md-8">
+                <form method="POST" th:action="@{/users/register}" th:object="${userRegisterBindingModel}">
+                    <div class="mb-3">
+                        <label for="exampleInputFirstName1" class="form-label">First Name</label>
+                        <input
+                                th:field="*{firstName}"
+                                th:errorclass="is-invalid"
+                                type="text"
+                                class="form-control"
+                                id="exampleInputFirstName1">
+                        <small
+                                id="firstNameHelpInline"
+                                class="invalid-feedback bg-danger text-light rounded">
+                            You must enter first name.
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputLastName1" class="form-label">Last Name</label>
+                        <input
+                                th:field="*{lastName}"
+                                th:errorclass="is-invalid"
+                                type="text"
+                                class="form-control"
+                                id="exampleInputLastName1">
+                        <small
+                                id="lastNameHelpInLine"
+                                class="invalid-feedback bg-danger text-light rounded">
+                            You must enter last name.
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputUsername1" class="form-label">Username</label>
+                        <input
+                                th:field="*{username}"
+                                th:errorclass="is-invalid"
+                                type="text"
+                                class="form-control"
+                                id="exampleInputUsername1"
+                                aria-describedby="usernameHelp">
+                        <small
+                                id="usernameHelpInLine"
+                                class="invalid-feedback bg-danger text-light rounded">
+                            You must choose a valid username.
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input
+                                th:field="*{email}"
+                                th:errorclass="is-invalid"
+                                type="email"
+                                class="form-control"
+                                id="exampleInputEmail1"
+                                aria-describedby="emailHelp">
+                        <small
+                                id="emailHelpInLine"
+                                class="invalid-feedback bg-danger text-light rounded">
+                            You must enter a valid email.
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input
+                                th:field="*{password}"
+                                th:errorclass="is-invalid"
+                                type="password"
+                                class="form-control"
+                                id="exampleInputPassword1"
+                                aria-describedby="passwordHelp">
+                        <div id="passwordHelp" class="form-text">Password must be between 6 and 20 characters.</div>
+                        <small
+                                id="passwordHelpInLine"
+                                class="invalid-feedback bg-danger text-light rounded">
+                            You must choose a password.
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputConfirmPassword1" class="form-label">Confirm Password</label>
+                        <input
+                                th:field="*{confirmPassword}"
+                                th:errorclass="is-invalid"
+                                type="password"
+                                class="form-control"
+                                id="exampleInputConfirmPassword1">
+                        <small
+                                id="confirmPasswordHelpInLine"
+                                class="invalid-feedback bg-danger text-light rounded">
+                            Passwords must match.
+                        </small>
+                    </div>
+                    <p>Already have a profile? <a href="/users/login">Login</a></p>
+                    <button type="submit" class="btn btn-outline-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments/footer::footer"></footer>
+</body>
+</html>

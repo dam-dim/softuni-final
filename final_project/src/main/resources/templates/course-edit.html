@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::head"></head>
+<body>
+    <nav th:replace="fragments/navigation::navbar"></nav>
+
+    <div class="container text-center">
+        <div class="row">
+            <h1>Edit a Course</h1>
+        </div>
+        <div class="row justify-content-center">
+            <hr class="w-25">
+        </div>
+        <div class="row justify-content-center mb-4">
+            <div class="col-4">
+                <form
+                        th:action="@{/services/courses/edit}"
+                        th:method="POST"
+                        th:object="${courseEditBindingModel}">
+                    <div class="mb-3">
+                        <label for="exampleInputCourseName1" class="form-label">Course Name</label>
+                        <input
+                                th:field="*{name}"
+                                th:errorclass="is-invalid"
+                                th:placeholder="${courseEdit.name}"
+                                id="exampleInputCourseName1"
+                                type="text"
+                                class="form-control"
+                                aria-describedby="courseNameHelpInLine">
+                        <small
+                                id="courseNameHelpInLine"
+                                class="invalid-feedback bg-danger text-light rounded">
+                            Please fill in a name.
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputCourseLevel1" class="form-label">Course Level</label>
+                        <select
+                                th:field="*{level}"
+                                th:errorclass="is-invalid"
+                                type="text"
+                                class="form-control"
+                                id="exampleInputCourseLevel1"
+                                aria-describedby="courseLevelHelpInLine">
+                            <option selected th:value="${courseEdit.level}" th:text="${courseEdit.level}"></option>
+                            <option th:each="l : ${levels}" th:value="${l}" th:text="${l}"></option>
+                        </select>
+                        <small
+                                id="courseLevelHelpInLine"
+                                class="invalid-feedback bg-danger text-light rounded">
+                            Please fill in a level.
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputCourseDescription1" class="form-label">Course Description</label>
+                        <textarea
+                                th:field="*{description}"
+                                th:errorclass="is-invalid"
+                                th:placeholder="${courseEdit.description}"
+                                type=""
+                                class="form-control"
+                                id="exampleInputCourseDescription1"
+                                aria-describedby="courseDescriptionHelpInLine">
+                            </textarea>
+                        <small
+                                id="courseDescriptionHelpInLine"
+                                class="invalid-feedback bg-danger text-light rounded">
+                            Please fill in a description.
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputCourseImageUrl1" class="form-label">Course Name</label>
+                        <input
+                                th:field="*{imageUrl}"
+                                th:errorclass="is-invalid"
+                                th:placeholder="${courseEdit.imageUrl}"
+                                type="text"
+                                class="form-control"
+                                id="exampleInputCourseImageUrl1"
+                                aria-describedby="courseImageUrlHelpInLine">
+                        <small
+                                id="courseImageUrlHelpInLine"
+                                class="invalid-feedback bg-danger text-light rounded">
+                            Please fill in a name.
+                        </small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments/footer::footer"></footer>
+</body>
+</html>
