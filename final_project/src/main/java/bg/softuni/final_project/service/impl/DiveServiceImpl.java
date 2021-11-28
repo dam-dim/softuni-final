@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static bg.softuni.final_project.model.entity.enums.DiveLevelEnum.*;
+import static bg.softuni.final_project.model.contants.DiveConstants.*;
 
 @Service
 public class DiveServiceImpl implements DiveService {
@@ -26,13 +26,16 @@ public class DiveServiceImpl implements DiveService {
     @Override
     public void addDive(DiveServiceModel diveServiceModel) {
         DiveEntity dive = modelMapper.map(diveServiceModel, DiveEntity.class);
-
-        String name = String.join("-",diveServiceModel.getType().toLowerCase().split("\\s++"));
-        dive.setImageUrl("/images/services/dives/" + name + ".jpg");
+        dive.setImageUrl(getImageUrl(diveServiceModel.getType()));
 
         //todo: implement unique dives
 
         diveRepository.save(dive);
+    }
+
+    public String getImageUrl(String diveType) {
+        String name = String.join("-",diveType.toLowerCase().split("\\s++"));
+        return "/images/services/dives/" + name + ".jpg";
     }
 
     @Override
@@ -57,42 +60,23 @@ public class DiveServiceImpl implements DiveService {
     @Override
     public void initialiseDives() {
         int n = 4;
-        List<String> diveTypes = List.of(
-                "Try Dive",
-                "Reck Dive",
-                "Night Dive",
-                "Deep Dive"
-        );
-
-        List<String> diveDescription = List.of(
-                "Try Dive",
-                "Reck Dive",
-                "Night Dive",
-                "Deep Dive"
-        );
-
-        List<String> diveImageUrl = List.of(
-                "/images/services/dives/try-dive.jpg",
-                "/images/services/dives/reck-dive.jpg",
-                "/images/services/dives/night-dive.jpg",
-                "/images/services/dives/deep-dive.jpg"
-        );
-
-        List<DiveLevelEnum> diveLevels = List.of(
-                BEGINNER,
-                ADVANCED,
-                PROFESSIONAL,
-                TECH
-        );
 
         for (int i = 0; i < n; i++) {
+            String diveType = INIT_DIVE_TYPES.get(i);
+            if (!isDiveTypeFree(diveType)) continue;
+
             DiveEntity dive = new DiveEntity();
             dive
-                    .setType(diveTypes.get(i))
-                    .setLevel(diveLevels.get(i))
-                    .setImageUrl(diveImageUrl.get(i))
-                    .setDescription(diveDescription.get(i));
+                    .setType(diveType)
+                    .setLevel(INIT_DIVE_LEVELS.get(i))
+                    .setImageUrl(getImageUrl(diveType))
+                    .setDescription(INIT_DIVE_DESCRIPTIONS.get(i));
+
             diveRepository.save(dive);
         }
+    }
+
+    public boolean isDiveTypeFree(String diveType) {
+        return diveRepository.findByTypeIgnoreCase(diveType).isEmpty();
     }
 }

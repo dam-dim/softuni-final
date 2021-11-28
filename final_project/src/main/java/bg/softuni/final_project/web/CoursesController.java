@@ -56,6 +56,7 @@ public class CoursesController {
     //todo: fix the design for details page
     @GetMapping("/details/{id}")
     public String details(@PathVariable String id, Model model) {
+
         model.addAttribute("course",
                 modelMapper.map(courseService.findById(id), CourseDetailsViewModel.class));
 

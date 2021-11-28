@@ -17,7 +17,7 @@ public class CourseEntity extends BaseEntity{
     public CourseEntity() {
     }
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     public String getName() {
         return name;
     }

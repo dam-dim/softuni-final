@@ -1,6 +1,9 @@
 package bg.softuni.final_project.model.binding;
 
+import bg.softuni.final_project.model.validator.username.UniqueUserName;
+
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -38,8 +41,8 @@ public class UserRegisterBindingModel {
         return this;
     }
 
-    @NotNull
-    @NotEmpty
+    @NotBlank(message = "Username must not be blank")
+    @UniqueUserName
     public String getUsername() {
         return username;
     }

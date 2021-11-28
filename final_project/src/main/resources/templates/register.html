@@ -14,7 +14,10 @@
         </div>
         <div class="row justify-content-center">
             <div class="col col-xxl-4 col-md-8">
-                <form method="POST" th:action="@{/users/register}" th:object="${userRegisterBindingModel}">
+                <form
+                        method="POST"
+                        th:action="@{/users/register}"
+                        th:object="${userRegisterBindingModel}">
                     <div class="mb-3">
                         <label for="exampleInputFirstName1" class="form-label">First Name</label>
                         <input
@@ -53,11 +56,18 @@
                                 id="exampleInputUsername1"
                                 aria-describedby="usernameHelp">
                         <small
+                                th:if="${#fields.hasErrors('username')}"
+                                th:errors="*{username}"
                                 id="usernameHelpInLine"
                                 class="invalid-feedback bg-danger text-light rounded">
                             You must choose a valid username.
                         </small>
                     </div>
+<!--                    <small-->
+<!--                            th:if="${!isUsernameFree}"-->
+<!--                            class="invalid-feedback bg-danger text-light rounded">-->
+<!--                        Username is taken.-->
+<!--                    </small>-->
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Email</label>
                         <input

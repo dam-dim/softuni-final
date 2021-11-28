@@ -17,7 +17,7 @@ public class DiveEntity extends BaseEntity {
     public DiveEntity() {
     }
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, unique = true)
     public String getType() {
         return type;
     }

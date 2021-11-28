@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static bg.softuni.final_project.model.entity.enums.CourseLevelEnum.*;
+import static bg.softuni.final_project.model.contants.CourseConstants.*;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -26,13 +26,17 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void addCourse(CourseServiceModel courseServiceModel) {
         CourseEntity course = modelMapper.map(courseServiceModel, CourseEntity.class);
-
-        String name = String.join("-",courseServiceModel.getName().toLowerCase().split("\\s++"));
-        course.setImageUrl("/images/services/courses/" + name + ".jpg");
+        course.setImageUrl(getImageUrl(courseServiceModel.getName()));
 
         //todo: implement unique courses
 
         courseRepository.save(course);
+    }
+
+    public String getImageUrl(String courseName) {
+        String name = String.join("-",courseName.toLowerCase().split("\\s++"));
+
+        return "/images/services/courses/" + name + ".jpg";
     }
 
     @Override
@@ -57,47 +61,23 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void initialiseCourses() {
         int n = 5;
-        List<String> courseNames = List.of(
-                "Open Water Diver",
-                "Advanced Open Water Diver",
-                "Divemaster",
-                "Instructor",
-                "Trimix"
-        );
-
-        List<CourseLevelEnum> courseLevels = List.of(
-                BEGINNER,
-                ADVANCED,
-                PROFESSIONAL,
-                PROFESSIONAL,
-                TECH
-        );
-
-        List<String> courseDescription = List.of(
-                "Open Water Diver",
-                "Advanced Open Water Diver",
-                "Divemaster",
-                "Instructor",
-                "Trimix"
-        );
-
-        List<String> courseImageUrl = List.of(
-                "/images/services/courses/open-water-diver.jpg",
-                "/images/services/courses/advanced-open-water-diver.jpg",
-                "/images/services/courses/divemaster.jpg",
-                "/images/services/courses/instructor.jpg",
-                "/images/services/courses/trimix.jpg"
-        );
 
         for (int i = 0; i < n; i++) {
+            String courseName = INIT_COURSE_NAMES.get(i);
+            if (!isCourseNameFree(courseName)) continue;
+
             CourseEntity course = new CourseEntity();
             course
-                    .setName(courseNames.get(i))
-                    .setLevel(courseLevels.get(i))
-                    .setDescription(courseDescription.get(i))
-                    .setImageUrl(courseImageUrl.get(i));
+                    .setName(courseName)
+                    .setLevel(INIT_COURSE_LEVELS.get(i))
+                    .setDescription(INIT_COURSE_DESCRIPTIONS.get(i))
+                    .setImageUrl(getImageUrl(courseName));
 
             courseRepository.save(course);
         }
+    }
+
+    public boolean isCourseNameFree(String courseName) {
+        return courseRepository.findByNameIgnoreCase(courseName).isEmpty();
     }
 }
