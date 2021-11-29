@@ -7,6 +7,7 @@ import bg.softuni.final_project.model.entity.enums.DiveLevelEnum;
 import bg.softuni.final_project.model.service.DiveServiceModel;
 import bg.softuni.final_project.model.view.*;
 import bg.softuni.final_project.service.DiveService;
+import bg.softuni.final_project.web.exception.DiveNotFoundException;
 import bg.softuni.final_project.web.exception.ServiceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -75,7 +76,7 @@ public class DivesController {
 
         diveService.addDive(modelMapper.map(diveAddBindingModel, DiveServiceModel.class));
 
-        return "redirect:/";
+        return "redirect:/services/dives";
     }
 
     //---------------------------------
@@ -87,7 +88,7 @@ public class DivesController {
         DiveDetailsViewModel dive = modelMapper.map(diveService.findById(id), DiveDetailsViewModel.class);
 
         if (dive == null) {
-            throw new ServiceNotFoundException();
+            throw new DiveNotFoundException("Dive with id " + id + " not found.");
         }
 
         model.addAttribute("dive", dive);
@@ -95,10 +96,13 @@ public class DivesController {
         return "dive-details";
     }
 
-    @PostMapping("/details/{id}")
+    //--------------------------------
+    //------------>DELETE<------------
+    //--------------------------------
+    @DeleteMapping("/details/{id}")
     public String detailsDelete(@PathVariable String id) {
         diveService.deleteDive(id);
-        return "redirect:/";
+        return "redirect:/services/dives";
     }
 
     //--------------------------------
@@ -113,16 +117,21 @@ public class DivesController {
         return "dive-edit";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editConfirm(@PathVariable String id) {
-        return "redirect:/";
-    }
+    @PatchMapping("/edit/{id}")
+    public String editConfirm(@Valid DiveEditBindingModel diveEditBindingModel, BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes, @PathVariable String id) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes
+                    .addFlashAttribute("diveEditBindingModel", diveEditBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.diveEditBindingModel",
+                            bindingResult);
 
-    @ExceptionHandler(ServiceNotFoundException.class)
-    public ModelAndView handleDbExceptions(ServiceNotFoundException e) {
-        ModelAndView modelAndView = new ModelAndView("error");
-        modelAndView.setStatus(HttpStatus.NOT_FOUND);
-        return modelAndView;
+            return "redirect:/services/dives/edit/"+id;
+        }
+
+        diveService.editDive(modelMapper.map(diveEditBindingModel, DiveServiceModel.class));
+
+        return "redirect:/services/dives";
     }
 
     @ModelAttribute

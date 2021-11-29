@@ -21,7 +21,7 @@
             <h3><b>Description: </b></h3> <p th:text="*{description}"></p>
             <!--todo: implement security-->
             <th:block sec:authorize="hasRole('ADMIN')">
-                <form th:action="@{/services/dives/details/{id}(id=*{id})}" th:method="POST">
+                <form th:action="@{/services/dives/details/{id}(id=*{id})}" th:method="DELETE">
                     <input type="submit" class="btn btn-outline-danger" value="Delete">
                 </form>
                 <a th:href="@{/services/dives/edit/{id}(id=*{id})}" class="btn btn-outline-warning">Edit</a>

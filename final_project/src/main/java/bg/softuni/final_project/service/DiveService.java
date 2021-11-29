@@ -15,4 +15,8 @@ public interface DiveService {
     DiveServiceModel findById(String id);
 
     void initialiseDives();
+
+    boolean isDiveTypeFree(String diveType);
+
+    void editDive(DiveServiceModel diveServiceModel);
 }

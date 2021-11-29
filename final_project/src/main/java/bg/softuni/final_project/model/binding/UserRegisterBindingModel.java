@@ -30,8 +30,7 @@ public class UserRegisterBindingModel {
         return this;
     }
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     public String getLastName() {
         return lastName;
     }

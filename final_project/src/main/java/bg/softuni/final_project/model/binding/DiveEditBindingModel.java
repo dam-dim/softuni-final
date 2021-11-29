@@ -1,6 +1,10 @@
 package bg.softuni.final_project.model.binding;
 
 import bg.softuni.final_project.model.entity.enums.CourseLevelEnum;
+import bg.softuni.final_project.model.validator.dive_name.UniqueDiveType;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class DiveEditBindingModel {
     private String type;
@@ -11,6 +15,8 @@ public class DiveEditBindingModel {
     public DiveEditBindingModel() {
     }
 
+    @UniqueDiveType
+    @NotBlank(message = "Cannot be empty.")
     public String getType() {
         return type;
     }
@@ -20,6 +26,7 @@ public class DiveEditBindingModel {
         return this;
     }
 
+    @NotBlank
     public String getDescription() {
         return description;
     }
@@ -29,6 +36,7 @@ public class DiveEditBindingModel {
         return this;
     }
 
+    @NotBlank
     public String getImageUrl() {
         return imageUrl;
     }
@@ -38,6 +46,7 @@ public class DiveEditBindingModel {
         return this;
     }
 
+    @NotNull
     public CourseLevelEnum getLevel() {
         return level;
     }

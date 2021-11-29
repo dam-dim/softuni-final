@@ -26,6 +26,8 @@
                                 class="form-control"
                                 id="exampleInputDiveType1">
                         <small
+                                th:if="${#fields.hasErrors('type')}"
+                                th:errors="*{type}"
                                 id="diveTypeHelpInLine"
                                 class="invalid-feedback bg-danger text-light rounded">
                             Please fill in a type.

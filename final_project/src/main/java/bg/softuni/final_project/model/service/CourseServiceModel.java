@@ -8,6 +8,7 @@ public class CourseServiceModel {
     private CourseLevelEnum level;
     private String description;
     private String imageUrl;
+    private int clicks;
 
     public CourseServiceModel() {
     }
@@ -54,6 +55,15 @@ public class CourseServiceModel {
 
     public CourseServiceModel setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+        return this;
+    }
+
+    public int getClicks() {
+        return clicks;
+    }
+
+    public CourseServiceModel setClicks(int clicks) {
+        this.clicks = clicks;
         return this;
     }
 }

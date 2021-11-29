@@ -1,6 +1,10 @@
 package bg.softuni.final_project.model.binding;
 
 import bg.softuni.final_project.model.entity.enums.CourseLevelEnum;
+import bg.softuni.final_project.model.validator.course_name.UniqueCourseName;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class CourseEditBindingModel {
     private String name;
@@ -11,6 +15,8 @@ public class CourseEditBindingModel {
     public CourseEditBindingModel() {
     }
 
+    @NotBlank(message = "Course name cannot be blank.")
+    @UniqueCourseName
     public String getName() {
         return name;
     }
@@ -20,6 +26,7 @@ public class CourseEditBindingModel {
         return this;
     }
 
+    @NotBlank
     public String getDescription() {
         return description;
     }
@@ -29,6 +36,7 @@ public class CourseEditBindingModel {
         return this;
     }
 
+    @NotBlank
     public String getImageUrl() {
         return imageUrl;
     }
@@ -38,6 +46,7 @@ public class CourseEditBindingModel {
         return this;
     }
 
+    @NotNull
     public CourseLevelEnum getLevel() {
         return level;
     }

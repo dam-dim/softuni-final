@@ -14,8 +14,8 @@
     <div class="row justify-content-center mb-4">
         <div class="col-4">
             <form
-                    th:action="@{/services/dives/edit}"
-                    th:method="POST"
+                    th:action="@{/services/dives/edit/{id}(id = ${diveEdit.id})}"
+                    th:method="PATCH"
                     th:object="${diveEditBindingModel}">
                 <div class="mb-3">
                     <label for="exampleInputCourseName1" class="form-label">Dive Name</label>
@@ -28,6 +28,8 @@
                             class="form-control"
                             aria-describedby="courseNameHelpInLine">
                     <small
+                            th:if="${#fields.hasErrors('type')}"
+                            th:errors="*{type}"
                             id="courseNameHelpInLine"
                             class="invalid-feedback bg-danger text-light rounded">
                         Please fill in a name.

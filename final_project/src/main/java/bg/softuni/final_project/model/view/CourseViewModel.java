@@ -5,6 +5,7 @@ public class CourseViewModel {
     private String name;
     private String description;
     private String imageUrl;
+    private int clicks;
 
     public CourseViewModel() {
     }
@@ -42,6 +43,15 @@ public class CourseViewModel {
 
     public CourseViewModel setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+        return this;
+    }
+
+    public int getClicks() {
+        return clicks;
+    }
+
+    public CourseViewModel setClicks(int clicks) {
+        this.clicks = clicks;
         return this;
     }
 }

@@ -27,6 +27,8 @@
                                 id="exampleInputCourseName1"
                                 aria-describedby="courseNameHelpInLine">
                         <small
+                                th:if="${#fields.hasErrors('name')}"
+                                th:errors="*{name}"
                                 id="courseNameHelpInLine"
                                 class="invalid-feedback bg-danger text-light rounded">
                             Please fill in a name.

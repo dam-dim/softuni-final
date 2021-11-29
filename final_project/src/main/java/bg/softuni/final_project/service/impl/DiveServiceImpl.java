@@ -5,6 +5,8 @@ import bg.softuni.final_project.model.entity.enums.DiveLevelEnum;
 import bg.softuni.final_project.model.service.DiveServiceModel;
 import bg.softuni.final_project.repository.DiveRepository;
 import bg.softuni.final_project.service.DiveService;
+import bg.softuni.final_project.web.exception.DiveNotFoundException;
+import org.hibernate.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +29,6 @@ public class DiveServiceImpl implements DiveService {
     public void addDive(DiveServiceModel diveServiceModel) {
         DiveEntity dive = modelMapper.map(diveServiceModel, DiveEntity.class);
         dive.setImageUrl(getImageUrl(diveServiceModel.getType()));
-
-        //todo: implement unique dives
 
         diveRepository.save(dive);
     }
@@ -54,7 +54,10 @@ public class DiveServiceImpl implements DiveService {
 
     @Override
     public DiveServiceModel findById(String id) {
-        return modelMapper.map(diveRepository.findById(id).orElse(null), DiveServiceModel.class);
+        return modelMapper.map(diveRepository
+                .findById(id)
+                .orElseThrow(() -> new DiveNotFoundException("Dive with id '"+ id + "' not found.")),
+                DiveServiceModel.class);
     }
 
     @Override
@@ -76,7 +79,24 @@ public class DiveServiceImpl implements DiveService {
         }
     }
 
+    @Override
     public boolean isDiveTypeFree(String diveType) {
         return diveRepository.findByTypeIgnoreCase(diveType).isEmpty();
+    }
+
+    @Override
+    public void editDive(DiveServiceModel diveServiceModel) {
+        DiveEntity diveEntity = diveRepository
+                .findByTypeIgnoreCase(diveServiceModel.getType())
+                .orElseThrow(() ->
+                        new DiveNotFoundException("Dive with type '"+ diveServiceModel.getType() + "' not found."));
+
+        diveEntity
+                .setType(diveServiceModel.getType())
+                .setLevel(diveServiceModel.getLevel())
+                .setDescription(diveServiceModel.getDescription())
+                .setImageUrl(diveServiceModel.getImageUrl());
+
+        diveRepository.save(diveEntity);
     }
 }

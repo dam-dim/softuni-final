@@ -1,7 +1,9 @@
 package bg.softuni.final_project.model.binding;
 
 import bg.softuni.final_project.model.entity.enums.DiveLevelEnum;
+import bg.softuni.final_project.model.validator.dive_name.UniqueDiveType;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -23,8 +25,7 @@ public class DiveAddBindingModel {
         return this;
     }
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     public String getDescription() {
         return description;
     }
@@ -34,8 +35,8 @@ public class DiveAddBindingModel {
         return this;
     }
 
-    @NotNull
-    @NotEmpty
+    @UniqueDiveType
+    @NotBlank(message = "Cannot be empty")
     public String getType() {
         return type;
     }

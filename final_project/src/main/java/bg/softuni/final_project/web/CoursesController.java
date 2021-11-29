@@ -63,11 +63,13 @@ public class CoursesController {
         return "course-details";
     }
 
-    @PostMapping("/details/{id}")
+    //------------------------------
+    //----------->DELETE<-----------
+    //------------------------------
+    @DeleteMapping("/details/{id}")
     public String detailsDelete(@PathVariable String id) {
         courseService.deleteCourse(id);
-
-        return "redirect:/";
+        return "redirect:/services/courses";
     }
 
     //-------------------------------
@@ -86,8 +88,8 @@ public class CoursesController {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes
-                    .addFlashAttribute("serviceCourseAddBindingModel", courseAddBindingModel)
-                    .addFlashAttribute("org.springframework.validation.BindingResult.serviceCourseAddBindingModel",
+                    .addFlashAttribute("courseAddBindingModel", courseAddBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.courseAddBindingModel",
                             bindingResult);
 
             return "redirect:add";
@@ -95,7 +97,7 @@ public class CoursesController {
 
         courseService.addCourse(modelMapper.map(courseAddBindingModel, CourseServiceModel.class));
 
-        return "redirect:/";
+        return "redirect:/services/courses";
     }
 
     //--------------------------------
@@ -109,8 +111,24 @@ public class CoursesController {
         return "course-edit";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editConfirm(@PathVariable String id) {
+    @PatchMapping("/edit/{id}")
+    public String editConfirm(@Valid CourseEditBindingModel courseEditBindingModel, BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes, @PathVariable String id) {
+
+        // todo: what if the new name/type/ is the same as the previous name/type/?
+        //  (the same goes for DivesController)
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes
+                    .addFlashAttribute("courseEditBindingModel", courseEditBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.courseEditBindingModel",
+                            bindingResult);
+
+            return "redirect:/services/courses/edit/"+id;
+        }
+
+        courseService.editCourse(modelMapper.map(courseEditBindingModel, CourseServiceModel.class), id);
+
         return "redirect:/";
     }
 

@@ -3,12 +3,22 @@ package bg.softuni.final_project.model.view;
 import bg.softuni.final_project.model.entity.enums.CourseLevelEnum;
 
 public class DiveEditViewModel {
+    private String id;
     private String type;
     private String description;
     private String imageUrl;
     private CourseLevelEnum level;
 
     public DiveEditViewModel() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public DiveEditViewModel setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getType() {
