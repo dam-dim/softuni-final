@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head::head">
+</head>
+<body>
+    <nav th:replace="fragments/navigation::navbar"></nav>
+
+    <div class="container">
+        <div class="row text-center">
+            <h1>Reviews</h1>
+        </div>
+        <div class="row justify-content-center">
+            <hr class="w-25">
+        </div>
+
+        <div class="card-deck">
+            <div class="row mb-4 justify-content-center">
+                <div class="card col-3 mb-4 mx-3" th:each="review : ${reviews}">
+                    <img class="card-img-top" src="/images/reviews/profile.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="|${review.firstName} ${review.lastName}|"></h5>
+                        <p class="card-text" th:text="${review.message}"></p>
+                        <form
+                                sec:authorize="hasRole('USER')"
+                                th:if="${review.isOwner}"
+                                th:action="@{/reviews/{id}/delete(id=*{review.id})}"
+                                th:method="DELETE">
+                            <input type="submit" class="btn btn-outline-danger" value="Delete">
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted" th:text="|Posted on: ${review.postedOn}|"></small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row justify-content-center mb-4 mt-4" sec:authorize="hasRole('USER')">
+            <div class="col-3">
+                <a href="/reviews/add" class="btn btn-outline-primary w-100">Add a Review</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer th:replace="fragments/footer::footer"></footer>
+</body>
+</html>

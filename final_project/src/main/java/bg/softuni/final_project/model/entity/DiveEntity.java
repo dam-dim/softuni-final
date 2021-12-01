@@ -12,7 +12,6 @@ public class DiveEntity extends BaseEntity {
     private String description;
     private DiveLevelEnum level;
     private String imageUrl;
-    private List<UserEntity> users;
 
     public DiveEntity() {
     }
@@ -55,16 +54,6 @@ public class DiveEntity extends BaseEntity {
 
     public DiveEntity setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        return this;
-    }
-
-    @ManyToMany(mappedBy = "dives")
-    public List<UserEntity> getUsers() {
-        return users;
-    }
-
-    public DiveEntity setUsers(List<UserEntity> users) {
-        this.users = users;
         return this;
     }
 }

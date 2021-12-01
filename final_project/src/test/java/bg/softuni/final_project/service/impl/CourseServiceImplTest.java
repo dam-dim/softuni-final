@@ -34,12 +34,7 @@ class CourseServiceImplTest {
 
     @Test
     public void addCourse_ShouldAddCorrect() {
-        //Arrange
-        Mockito.when(mockedCourseRepository.save(testCourse)).thenReturn(testCourse);
-        CourseService courseService = new CourseServiceImpl(mockedCourseRepository, modelMapper);
-        //Act
-        courseService.addCourse(modelMapper.map(testCourse, CourseServiceModel.class));
-        //Assert
+
 
     }
 }

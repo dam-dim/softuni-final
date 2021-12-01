@@ -26,4 +26,6 @@ public interface CourseService {
     List<CourseServiceModel> getTopNPopularCourses(int n);
 
     List<CourseServiceModel> getSortedPopularCourses();
+
+    void initialiseCourseClicks();
 }

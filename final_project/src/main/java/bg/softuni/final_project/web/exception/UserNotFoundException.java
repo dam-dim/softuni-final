@@ -3,9 +3,9 @@ package bg.softuni.final_project.web.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class CourseNotFoundException extends ServiceNotFoundException {
-    public CourseNotFoundException(String message) {
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class UserNotFoundException extends RuntimeException{
+    public UserNotFoundException(String message) {
         super(message);
     }
 }

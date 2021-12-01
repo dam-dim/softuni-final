@@ -150,6 +150,15 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public void initialiseCourseClicks() {
+        List<CourseEntity> all = courseRepository.findAll();
+
+        for (CourseEntity course : all) {
+            courseCounter.putIfAbsent(course.getId(), 0);
+        }
+    }
+
+    @Override
     public List<CourseServiceModel> getTopNPopularCourses(int n) {
         if (n > courseCounter.size()) {
             n = courseCounter.size();

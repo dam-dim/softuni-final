@@ -1,26 +1,25 @@
-package bg.softuni.final_project.model.service;
+package bg.softuni.final_project.model.view;
 
 import bg.softuni.final_project.model.entity.UserRoleEntity;
 
 import java.util.Set;
 
-public class UserServiceModel {
+public class UserViewModel {
     private String id;
     private String firstName;
     private String lastName;
     private String username;
-    private String password;
     private String email;
-    private Set<UserRoleEntity> roles;
+    private UserRoleEntity role;
 
-    public UserServiceModel() {
+    public UserViewModel() {
     }
 
     public String getId() {
         return id;
     }
 
-    public UserServiceModel setId(String id) {
+    public UserViewModel setId(String id) {
         this.id = id;
         return this;
     }
@@ -29,7 +28,7 @@ public class UserServiceModel {
         return firstName;
     }
 
-    public UserServiceModel setFirstName(String firstName) {
+    public UserViewModel setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -38,7 +37,7 @@ public class UserServiceModel {
         return lastName;
     }
 
-    public UserServiceModel setLastName(String lastName) {
+    public UserViewModel setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -47,17 +46,8 @@ public class UserServiceModel {
         return username;
     }
 
-    public UserServiceModel setUsername(String username) {
+    public UserViewModel setUsername(String username) {
         this.username = username;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public UserServiceModel setPassword(String password) {
-        this.password = password;
         return this;
     }
 
@@ -65,17 +55,17 @@ public class UserServiceModel {
         return email;
     }
 
-    public UserServiceModel setEmail(String email) {
+    public UserViewModel setEmail(String email) {
         this.email = email;
         return this;
     }
 
-    public Set<UserRoleEntity> getRoles() {
-        return roles;
+    public UserRoleEntity getRole() {
+        return role;
     }
 
-    public UserServiceModel setRoles(Set<UserRoleEntity> roles) {
-        this.roles = roles;
+    public UserViewModel setRole(UserRoleEntity role) {
+        this.role = role;
         return this;
     }
 }

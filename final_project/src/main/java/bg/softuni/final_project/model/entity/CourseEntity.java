@@ -12,7 +12,6 @@ public class CourseEntity extends BaseEntity{
     private String description;
     private CourseLevelEnum level;
     private String imageUrl;
-    private List<UserEntity> users;
 
     public CourseEntity() {
     }
@@ -55,16 +54,6 @@ public class CourseEntity extends BaseEntity{
 
     public CourseEntity setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        return this;
-    }
-
-    @ManyToMany(mappedBy = "courses")
-    public List<UserEntity> getUsers() {
-        return users;
-    }
-
-    public CourseEntity setUsers(List<UserEntity> users) {
-        this.users = users;
         return this;
     }
 }

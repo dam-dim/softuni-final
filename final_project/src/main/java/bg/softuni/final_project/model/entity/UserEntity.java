@@ -16,11 +16,12 @@ public class UserEntity extends BaseEntity{
     private String username;
     private String password;
     private String email;
-    private Set<UserRoleEntity> roles = new HashSet<>();
-    private List<DiveEntity> dives = new ArrayList<>();
-    private List<CourseEntity> courses = new ArrayList<>();
+    private Set<UserRoleEntity> roles;
+    private Set<ReviewEntity> reviews;
 
     public UserEntity() {
+        roles = new HashSet<>();
+        reviews = new HashSet<>();
     }
 
     @Column(name = "first_name", nullable = false)
@@ -73,16 +74,6 @@ public class UserEntity extends BaseEntity{
         return this;
     }
 
-    @ManyToMany
-    public List<DiveEntity> getDives() {
-        return dives;
-    }
-
-    public UserEntity setDives(List<DiveEntity> dives) {
-        this.dives = dives;
-        return this;
-    }
-
     @ManyToMany(fetch = FetchType.EAGER)
     public Set<UserRoleEntity> getRoles() {
         return roles;
@@ -93,13 +84,13 @@ public class UserEntity extends BaseEntity{
         return this;
     }
 
-    @ManyToMany
-    public List<CourseEntity> getCourses() {
-        return courses;
+    @OneToMany
+    public Set<ReviewEntity> getReviews() {
+        return reviews;
     }
 
-    public UserEntity setCourses(List<CourseEntity> courses) {
-        this.courses = courses;
+    public UserEntity setReviews(Set<ReviewEntity> reviews) {
+        this.reviews = reviews;
         return this;
     }
 }

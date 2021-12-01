@@ -1,7 +1,5 @@
 package bg.softuni.final_project.service.impl;
 
-import bg.softuni.final_project.model.entity.CourseEntity;
-import bg.softuni.final_project.model.entity.DiveEntity;
 import bg.softuni.final_project.model.entity.UserEntity;
 import bg.softuni.final_project.model.entity.UserRoleEntity;
 import bg.softuni.final_project.model.entity.enums.UserRoleEnum;
@@ -9,6 +7,7 @@ import bg.softuni.final_project.model.service.UserServiceModel;
 import bg.softuni.final_project.repository.UserRepository;
 import bg.softuni.final_project.repository.UserRoleRepository;
 import bg.softuni.final_project.service.UserService;
+import bg.softuni.final_project.web.exception.UserNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,9 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,13 +40,8 @@ public class UserServiceImpl implements UserService {
     public void registerUser(UserServiceModel userServiceModel) {
         UserEntity user = modelMapper.map(userServiceModel, UserEntity.class);
 
-        List<CourseEntity> courses = new ArrayList<>();
-        List<DiveEntity> dives = new ArrayList<>();
-
         user
                 .setPassword(passwordEncoder.encode(userServiceModel.getPassword()))
-                .setCourses(courses)
-                .setDives(dives)
                 .setRoles(Set.of(userRoleRepository.findByRole(UserRoleEnum.USER)));
 
         user = userRepository.save(user);
@@ -85,7 +79,10 @@ public class UserServiceImpl implements UserService {
             UserRoleEntity userRole = new UserRoleEntity();
             userRole.setRole(UserRoleEnum.USER);
 
-            userRoleRepository.saveAll(List.of(adminRole, userRole));
+            UserRoleEntity administratorRole = new UserRoleEntity();
+            administratorRole.setRole(UserRoleEnum.ADMINISTRATOR);
+
+            userRoleRepository.saveAll(List.of(adminRole, userRole, administratorRole));
         }
     }
 
@@ -94,6 +91,7 @@ public class UserServiceImpl implements UserService {
 
             UserRoleEntity adminRole = userRoleRepository.findByRole(UserRoleEnum.ADMIN);
             UserRoleEntity userRole = userRoleRepository.findByRole(UserRoleEnum.USER);
+            UserRoleEntity administratorRole = userRoleRepository.findByRole(UserRoleEnum.ADMINISTRATOR);
 
             UserEntity admin = new UserEntity();
             admin
@@ -102,8 +100,18 @@ public class UserServiceImpl implements UserService {
                     .setFirstName("Damyan")
                     .setLastName("Dimov")
                     .setEmail("ddimov99@mail.bg")
-                    .setRoles(Set.of(adminRole, userRole));
+                    .setRoles(Set.of(adminRole));
             userRepository.save(admin);
+
+            UserEntity administrator = new UserEntity();
+            administrator
+                    .setUsername("administrator")
+                    .setPassword(passwordEncoder.encode("test"))
+                    .setFirstName("Tatyana")
+                    .setLastName("Dimova")
+                    .setEmail("tanyadim@mail.bg")
+                    .setRoles(Set.of(administratorRole));
+            userRepository.save(administrator);
 
             UserEntity user = new UserEntity();
             user
@@ -114,11 +122,77 @@ public class UserServiceImpl implements UserService {
                     .setEmail("karo@abv.bg")
                     .setRoles(Set.of(userRole));
             userRepository.save(user);
+
+            UserEntity user2 = new UserEntity();
+            user2
+                    .setUsername("ico")
+                    .setPassword(passwordEncoder.encode("ico"))
+                    .setFirstName("Hristo")
+                    .setLastName("Dimov")
+                    .setEmail("icodim@abv.bg")
+                    .setRoles(Set.of(userRole));
+            userRepository.save(user2);
         }
     }
 
     public boolean isUserNameFree(String username) {
         return userRepository.findByUsernameIgnoreCase(username).isEmpty();
+    }
+
+    @Override
+    public UserEntity findById(String id) {
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException("user with id '" + id + "'  not found"));
+    }
+
+    @Override
+    public UserEntity findUserByUsername(String username) {
+        return userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User with username '"+username+"' not found."));
+    }
+
+    @Override
+    public List<UserServiceModel> findAllNotAdmin() {
+        return mapListToService(findAllNotAdminEntity());
+    }
+
+    @Override
+    public void updateUserRole(String id, UserRoleEnum role) {
+        UserEntity userEntity = userRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException("user with id '" + id + "' not found."));
+
+        UserRoleEntity roleEntity = userRoleRepository.findByRole(role);
+
+        userEntity.setRoles(Set.of(roleEntity));
+
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void deleteUser(String id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<UserEntity> findAllNotAdminEntity() {
+        UserRoleEntity adminRole = userRoleRepository.findByRole(UserRoleEnum.ADMIN);
+        return userRepository.findAllByRolesNotContaining(adminRole);
+    }
+
+    // list from entity -> service
+    private List<UserServiceModel> mapListToService(List<UserEntity> userEntities) {
+        return userEntities
+                .stream()
+                .map(this::mapEntityToService)
+                .collect(Collectors.toList());
+    }
+
+    // from entity -> service
+    private UserServiceModel mapEntityToService(UserEntity userEntity) {
+        return modelMapper.map(userEntity, UserServiceModel.class);
     }
 }
 
