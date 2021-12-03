@@ -52,10 +52,14 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerConfirm(@Valid UserRegisterBindingModel userRegisterBindingModel,
-                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+                                  BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 
-        if (bindingResult.hasErrors() || !userRegisterBindingModel.getPassword()
-                .equals(userRegisterBindingModel.getConfirmPassword())) {
+        boolean passwordsMatching = userRegisterBindingModel.getPassword()
+                .equals(userRegisterBindingModel.getConfirmPassword());
+
+        redirectAttributes.addFlashAttribute("passwordsMatching", passwordsMatching);
+
+        if (bindingResult.hasErrors() || !passwordsMatching) {
             redirectAttributes
                     .addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel",

@@ -10,6 +10,7 @@ import bg.softuni.final_project.service.CourseService;
 import bg.softuni.final_project.service.StatsService;
 import bg.softuni.final_project.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,6 +46,7 @@ public class AdminController {
         return "admin";
     }
 
+    @Secured("ROLE_ADMIN")
     @PatchMapping("/{id}")
     public String changeRole(@Valid AdminBindingModel adminBindingModel,
                              BindingResult bindingResult,
@@ -56,7 +58,7 @@ public class AdminController {
                     .addFlashAttribute("adminBindingModel", adminBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult", bindingResult);
 
-            return "redirect:";
+            return "redirect:/admin";
         }
 
         userService.updateUserRole(id, adminBindingModel.getRole());
@@ -64,6 +66,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable String id) {
         userService.deleteUser(id);

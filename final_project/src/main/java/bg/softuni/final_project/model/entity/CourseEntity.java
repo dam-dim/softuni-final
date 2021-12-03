@@ -3,6 +3,9 @@ package bg.softuni.final_project.model.entity;
 import bg.softuni.final_project.model.entity.enums.CourseLevelEnum;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -17,6 +20,8 @@ public class CourseEntity extends BaseEntity{
     }
 
     @Column(name = "name", nullable = false, unique = true)
+    @NotNull
+    @Size(min = 3, max = 30)
     public String getName() {
         return name;
     }
@@ -27,6 +32,8 @@ public class CourseEntity extends BaseEntity{
     }
 
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+    @NotNull
+    @Size(min = 20)
     public String getDescription() {
         return description;
     }
@@ -38,6 +45,7 @@ public class CourseEntity extends BaseEntity{
 
     @Column(name = "level", nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     public CourseLevelEnum getLevel() {
         return level;
     }
@@ -48,6 +56,7 @@ public class CourseEntity extends BaseEntity{
     }
 
     @Column(name = "image_url", nullable = false)
+    @NotNull
     public String getImageUrl() {
         return imageUrl;
     }

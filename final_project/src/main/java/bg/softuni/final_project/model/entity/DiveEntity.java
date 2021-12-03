@@ -3,6 +3,8 @@ package bg.softuni.final_project.model.entity;
 import bg.softuni.final_project.model.entity.enums.DiveLevelEnum;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -17,6 +19,8 @@ public class DiveEntity extends BaseEntity {
     }
 
     @Column(name = "type", nullable = false, unique = true)
+    @NotNull
+    @Size(min = 3, max = 20)
     public String getType() {
         return type;
     }
@@ -27,6 +31,8 @@ public class DiveEntity extends BaseEntity {
     }
 
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+    @NotNull
+    @Size(min = 20)
     public String getDescription() {
         return description;
     }
@@ -38,6 +44,7 @@ public class DiveEntity extends BaseEntity {
 
     @Column(name = "level", nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     public DiveLevelEnum getLevel() {
         return level;
     }
@@ -48,6 +55,7 @@ public class DiveEntity extends BaseEntity {
     }
 
     @Column(name = "image_url", nullable = false)
+    @NotNull
     public String getImageUrl() {
         return imageUrl;
     }

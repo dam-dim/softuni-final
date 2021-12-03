@@ -20,13 +20,12 @@
                 <hr>
             </div>
             <div class="row mb-4">
-                <div th:each="dive : ${d.getValue()}" class="col-4 mb-2">
-                    <a th:href="@{/services/dives/details/{id}(id=*{dive.id})}">
+                <div th:each="dive : ${d.getValue()}" class="col-lg-4 col-sm-6 mb-2">
+                    <a th:href="@{/services/dives/{id}/details(id=*{dive.id})}">
                         <div class="card bg-dark text-white">
                             <img th:src="*{dive.imageUrl}" class="card-im" width="100%" height="250px" alt="...">
                             <div class="card-img-overlay">
                                 <h3 class="card-title" th:text="*{dive.type}"><b ></b></h3>
-                                <h5 th:text="*{dive.description}" class="card-text p-4"></h5>
                             </div>
                         </div>
                     </a>

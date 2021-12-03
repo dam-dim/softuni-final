@@ -109,17 +109,22 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void onRequest(HttpServletRequest request) {
-        String toContain = "/services/courses/details/";
         String uri = request.getRequestURI();
         String[] uriComponents = uri.split("/");
 
-        // with this if I ensure that the uri is exactly /services/courses/details/{some id}
-        if (uri.contains(toContain) && uriComponents.length == 5) {
-            String courseId = uriComponents[uri.split("/").length - 1];
+        if (uriComponents.length != 5) {
+            return;
+        }
+
+        // with this 'if' I ensure that the uri is exactly /services/courses/{some id}/details
+        if (uriComponents[1].equals("services") &&
+                uriComponents[2].equals("courses") &&
+                uriComponents[4].equals("details")) {
+
+            String courseId = uriComponents[3];
             CourseEntity courseEntity = courseRepository
                     .findById(courseId)
-                    .orElse(null);
-            LOGGER.info("{}", uri);
+                    .orElseThrow(() -> new CourseNotFoundException("Course with id '"+courseId+"' not found."));
 
             courseCounter.putIfAbsent(courseId, 0);
             courseCounter.put(courseId, courseCounter.get(courseId)+1);

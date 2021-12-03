@@ -27,6 +27,8 @@
                                 class="form-control"
                                 id="exampleInputFirstName1">
                         <small
+                                th:if="${#fields.hasErrors('firstName')}"
+                                th:errors="*{firstName}"
                                 id="firstNameHelpInline"
                                 class="invalid-feedback bg-danger text-light rounded">
                             You must enter first name.
@@ -41,6 +43,8 @@
                                 class="form-control"
                                 id="exampleInputLastName1">
                         <small
+                                th:if="${#fields.hasErrors('lastName')}"
+                                th:errors="*{lastName}"
                                 id="lastNameHelpInLine"
                                 class="invalid-feedback bg-danger text-light rounded">
                             You must enter last name.
@@ -73,6 +77,8 @@
                                 id="exampleInputEmail1"
                                 aria-describedby="emailHelp">
                         <small
+                                th:if="${#fields.hasErrors('email')}"
+                                th:errors="*{email}"
                                 id="emailHelpInLine"
                                 class="invalid-feedback bg-danger text-light rounded">
                             You must enter a valid email.
@@ -87,8 +93,9 @@
                                 class="form-control"
                                 id="exampleInputPassword1"
                                 aria-describedby="passwordHelp">
-                        <div id="passwordHelp" class="form-text">Password must be between 6 and 20 characters.</div>
                         <small
+                                th:if="${#fields.hasErrors('password')}"
+                                th:errors="*{password}"
                                 id="passwordHelpInLine"
                                 class="invalid-feedback bg-danger text-light rounded">
                             You must choose a password.
@@ -103,9 +110,15 @@
                                 class="form-control"
                                 id="exampleInputConfirmPassword1">
                         <small
-                                id="confirmPasswordHelpInLine"
+                                th:unless="${passwordsMatching}"
                                 class="invalid-feedback bg-danger text-light rounded">
                             Passwords must match.
+                        </small>
+                        <small
+                                th:if="${#fields.hasErrors('confirmPassword')}"
+                                th:errors="*{confirmPassword}"
+                                id="confirmPasswordHelpInLine"
+                                class="invalid-feedback bg-danger text-light rounded">
                         </small>
                     </div>
                     <p>Already have a profile? <a href="/users/login">Login</a></p>

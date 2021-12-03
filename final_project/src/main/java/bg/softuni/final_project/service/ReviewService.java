@@ -1,6 +1,7 @@
 package bg.softuni.final_project.service;
 
 import bg.softuni.final_project.model.service.ReviewServiceModel;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

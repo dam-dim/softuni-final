@@ -3,8 +3,11 @@ package bg.softuni.final_project.model.binding;
 import bg.softuni.final_project.model.entity.enums.CourseLevelEnum;
 import bg.softuni.final_project.model.validator.dive_name.UniqueDiveType;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class DiveEditBindingModel {
     private String type;
@@ -16,7 +19,8 @@ public class DiveEditBindingModel {
     }
 
     @UniqueDiveType
-    @NotBlank(message = "Cannot be empty.")
+    @NotNull(message = "Dive type is required.")
+    @Size(min = 3, max = 30, message = "Dive type should be between 3 and 20 characters long.")
     public String getType() {
         return type;
     }
@@ -26,7 +30,8 @@ public class DiveEditBindingModel {
         return this;
     }
 
-    @NotBlank
+    @NotNull(message = "Dive description is required.")
+    @Size(min = 20, message = "Dive description should be minimum 20 characters long.")
     public String getDescription() {
         return description;
     }
@@ -36,7 +41,7 @@ public class DiveEditBindingModel {
         return this;
     }
 
-    @NotBlank
+    @NotBlank(message = "Image URL is required.")
     public String getImageUrl() {
         return imageUrl;
     }
@@ -46,7 +51,8 @@ public class DiveEditBindingModel {
         return this;
     }
 
-    @NotNull
+    @NotNull(message = "Dive level is required.")
+    @Enumerated(EnumType.STRING)
     public CourseLevelEnum getLevel() {
         return level;
     }

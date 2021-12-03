@@ -2,6 +2,8 @@ package bg.softuni.final_project.service.impl;
 
 import bg.softuni.final_project.model.entity.ReviewEntity;
 import bg.softuni.final_project.model.entity.UserEntity;
+import bg.softuni.final_project.model.entity.UserRoleEntity;
+import bg.softuni.final_project.model.entity.enums.UserRoleEnum;
 import bg.softuni.final_project.model.service.ReviewServiceModel;
 import bg.softuni.final_project.repository.ReviewRepository;
 import bg.softuni.final_project.service.ReviewService;
@@ -85,7 +87,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void initialiseReviews() {
         if (reviewRepository.count() == 0) {
-            List<UserEntity> users = userService.findAllNotAdminEntity();
+            List<UserEntity> users = userService.findAllUsersWithRole(UserRoleEnum.USER);
             Random random = new Random();
 
             for (int i = 0; i < 8; i++) {

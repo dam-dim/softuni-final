@@ -28,15 +28,16 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                  .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                  .antMatchers(
                          "/admin",
-                         "/services/course/add",
-                         "/services/course/add").hasRole(UserRoleEnum.ADMIN.name())
+                         "/services/courses/add",
+                         "/services/dives/add").hasRole(UserRoleEnum.ADMIN.name())
+                .antMatchers("/reviews/add").hasRole(UserRoleEnum.USER.name())
                  .antMatchers(
                          "/",
                          "/users/*",
-                         "/schedule",
                          "/services",
                          "/services/*",
-                         "/info/contacts",
+                         "/services/dives/*/details",
+                         "/services/courses/*/details",
                          "/reviews").permitAll()
                  .antMatchers("/**").authenticated()
                 .and()

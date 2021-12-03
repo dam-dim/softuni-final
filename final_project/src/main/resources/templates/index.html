@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head::head"></head>
+<head th:replace="fragments/head::head">
+</head>
 <body>
     <nav th:replace="fragments/navigation::navbar"></nav>
 
@@ -13,13 +14,13 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="/images/slider/2.PNG" class="d-block w-100 img-fluid" alt="...">
+                <img src="/images/slider/3.jpg" class="d-block w-100 img-fluid" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="/images/slider/2.PNG" class="d-block w-100 img-fluid" alt="...">
+                <img src="/images/slider/1.jpg" class="d-block w-100 img-fluid" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="/images/slider/2.PNG" class="d-block w-100 img-fluid" alt="...">
+                <img src="/images/slider/4.jpg" class="d-block w-100 img-fluid" alt="...">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -40,13 +41,27 @@
         <div th:replace="fragments/start-diving::start-diving">
         </div>
 
+        <section id="weatherSection">
+            <div class="row text-center">
+                <h1>Weather for the next 5 days.</h1>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-2 text-center" th:each="day : ${weather}">
+                    <h3 th:text="|${day.get(day.size()/2).getDt_txt().split(' ')[0].split('-')[2]}.${day.get(day.size()/2).getDt_txt().split(' ')[0].split('-')[1]}|"></h3>
+                    <h5 th:text="|${day.get(day.size()/2).getMain().getTemp()}&deg;|"></h5>
+                    <h5 th:text="${day.get(day.size()/2).getWeather()[0].getMain()}"></h5>
+                    <img th:src="@{https://openweathermap.org/img/wn/{id}@2x.png(id = *{day.get(day.size()/2).getWeather()[0].getIcon()})}" alt="">
+                </div>
+            </div>
+        </section>
+
         <section th:if="${topCourses.size() > 0}" class="mt-5 mb-5">
             <div class="row text-center">
                 <h1>Our <b>most popular</b> courses</h1>
             </div>
-            <div class="row mb-4">
-                <div class="col mb-2" th:each="course : ${topCourses}">
-                    <a th:href="@{/services/courses/details/{id}(id=*{course.id})}">
+            <div class="row mb-4 justify-content-center">
+                <div class="col-lg-4 col-sm-12 col-md-6 mb-2" th:each="course : ${topCourses}">
+                    <a th:href="@{/services/courses/{id}/details(id=*{course.id})}">
                         <div class="card bg-dark text-white">
                             <img th:src="*{course.imageUrl}" class="card-img" height="250px" alt="...">
                             <div class="card-img-overlay">
@@ -58,22 +73,6 @@
             </div>
         </section>
 
-
-        <div class="row mt-5 text-center">
-            <h1><b>Schedule</b> for this week</h1>
-        </div>
-
-        <table th:replace="fragments/schedule-table::schedule">
-        </table>
-
-        <!--todo-->
-        <div class="row mb-4">
-            <div class="col text-center">
-                <a href="/schedule">
-                    <button type="button" class="btn btn-outline-primary">Book Your Dive Now</button>
-                </a>
-            </div>
-        </div>
 
     </div>
 

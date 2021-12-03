@@ -14,7 +14,7 @@
         <div class="row justify-content-center mb-4">
             <div class="col-4">
                 <form
-                        th:action="@{/services/courses/edit/{id}(id=${courseEdit.id})}"
+                        th:action="@{/services/courses/{id}/edit(id=${courseEdit.id})}"
                         th:method="PATCH"
                         th:object="${courseEditBindingModel}">
                     <div class="mb-3">
@@ -48,6 +48,8 @@
                             <option th:each="l : ${levels}" th:value="${l}" th:text="${l}"></option>
                         </select>
                         <small
+                                th:if="${#fields.hasErrors('level')}"
+                                th:errors="*{level}"
                                 id="courseLevelHelpInLine"
                                 class="invalid-feedback bg-danger text-light rounded">
                             Please fill in a level.
@@ -65,13 +67,15 @@
                                 aria-describedby="courseDescriptionHelpInLine">
                             </textarea>
                         <small
+                                th:if="${#fields.hasErrors('description')}"
+                                th:errors="*{description}"
                                 id="courseDescriptionHelpInLine"
                                 class="invalid-feedback bg-danger text-light rounded">
                             Please fill in a description.
                         </small>
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputCourseImageUrl1" class="form-label">Course Name</label>
+                        <label for="exampleInputCourseImageUrl1" class="form-label">Course Image Url</label>
                         <input
                                 th:field="*{imageUrl}"
                                 th:errorclass="is-invalid"
@@ -81,6 +85,8 @@
                                 id="exampleInputCourseImageUrl1"
                                 aria-describedby="courseImageUrlHelpInLine">
                         <small
+                                th:if="${#fields.hasErrors('imageUrl')}"
+                                th:errors="*{imageUrl}"
                                 id="courseImageUrlHelpInLine"
                                 class="invalid-feedback bg-danger text-light rounded">
                             Please fill in a name.

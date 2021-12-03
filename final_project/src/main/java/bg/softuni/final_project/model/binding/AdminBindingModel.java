@@ -1,9 +1,9 @@
 package bg.softuni.final_project.model.binding;
 
-import bg.softuni.final_project.model.entity.UserRoleEntity;
 import bg.softuni.final_project.model.entity.enums.UserRoleEnum;
 
-import javax.validation.constraints.NotBlank;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 public class AdminBindingModel {
@@ -12,7 +12,8 @@ public class AdminBindingModel {
     public AdminBindingModel() {
     }
 
-    @NotNull
+    @NotNull(message = "Please choose a role.")
+    @Enumerated(EnumType.STRING)
     public UserRoleEnum getRole() {
         return role;
     }

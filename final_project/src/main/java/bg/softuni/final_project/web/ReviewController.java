@@ -9,9 +9,9 @@ import bg.softuni.final_project.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.datetime.standard.DateTimeFormatterFactory;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -22,9 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,11 +78,13 @@ public class ReviewController {
         return viewModel;
     }
 
+    @Secured("ROLE_USER")
     @GetMapping("/add")
     public String add() {
         return "review-add";
     }
 
+    @Secured("ROLE_USER")
     @PostMapping("/add")
     public String addConfirm(@Valid ReviewAddBindingModel reviewAddBindingModel,
                              BindingResult bindingResult,

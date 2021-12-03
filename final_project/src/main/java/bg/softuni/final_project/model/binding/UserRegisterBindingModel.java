@@ -2,10 +2,7 @@ package bg.softuni.final_project.model.binding;
 
 import bg.softuni.final_project.model.validator.username.UniqueUserName;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 public class UserRegisterBindingModel {
 
@@ -19,8 +16,8 @@ public class UserRegisterBindingModel {
     public UserRegisterBindingModel() {
     }
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "First name is required.")
+    @Size(min = 2, max = 15, message = "First name should be between 2 and 15 characters long.")
     public String getFirstName() {
         return firstName;
     }
@@ -30,7 +27,8 @@ public class UserRegisterBindingModel {
         return this;
     }
 
-    @NotBlank
+    @NotNull(message = "Last name is required.")
+    @Size(min = 2, max = 15, message = "Last name should be between 2 and 15 characters long.")
     public String getLastName() {
         return lastName;
     }
@@ -40,7 +38,8 @@ public class UserRegisterBindingModel {
         return this;
     }
 
-    @NotBlank(message = "Username must not be blank")
+    @NotNull(message = "Username is required.")
+    @Size(min = 2, max = 15, message = "Username should be between 2 and 15 characters long.")
     @UniqueUserName
     public String getUsername() {
         return username;
@@ -51,9 +50,8 @@ public class UserRegisterBindingModel {
         return this;
     }
 
-    @NotNull
+    @NotBlank(message = "Email is required.")
     @Email
-    @NotEmpty
     public String getEmail() {
         return email;
     }
@@ -63,8 +61,8 @@ public class UserRegisterBindingModel {
         return this;
     }
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Password is required.")
+    @Size(min = 4, message = "Password must be between 4 and 10 characters long.")
     public String getPassword() {
         return password;
     }
@@ -74,8 +72,8 @@ public class UserRegisterBindingModel {
         return this;
     }
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Password is required.")
+    @Size(min = 4, max = 10, message = "Password must be between 4 and 10 characters long.")
     public String getConfirmPassword() {
         return confirmPassword;
     }

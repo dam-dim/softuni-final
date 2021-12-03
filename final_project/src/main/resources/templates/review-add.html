@@ -28,6 +28,8 @@
                                 class="form-control"
                                 id="exampleInputMessage1"></textarea>
                         <small
+                                th:if="${#fields.hasErrors('message')}"
+                                th:errors="*{message}"
                                 id="firstNameHelpInline"
                                 class="invalid-feedback bg-danger text-light rounded">
                             You must enter a message.

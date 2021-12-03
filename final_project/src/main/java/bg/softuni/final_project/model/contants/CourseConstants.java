@@ -24,10 +24,10 @@ public class CourseConstants {
     );
 
     public static final List<String> INIT_COURSE_DESCRIPTIONS = List.of(
-            "Open Water Diver",
-            "Advanced Open Water Diver",
-            "Divemaster",
-            "Instructor",
-            "Trimix"
+            "Description for Open Water Diver",
+            "Description for Advanced Open Water Diver",
+            "Description for Divemaster",
+            "Description for Instructor",
+            "Description for Trimix"
     );
 }

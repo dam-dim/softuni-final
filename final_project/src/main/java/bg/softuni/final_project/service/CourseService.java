@@ -2,6 +2,7 @@ package bg.softuni.final_project.service;
 
 import bg.softuni.final_project.model.entity.enums.CourseLevelEnum;
 import bg.softuni.final_project.model.service.CourseServiceModel;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

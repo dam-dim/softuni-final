@@ -11,6 +11,7 @@ import bg.softuni.final_project.web.exception.DiveNotFoundException;
 import bg.softuni.final_project.web.exception.ServiceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,9 @@ public class DivesController {
         this.modelMapper = modelMapper;
     }
 
+    //--------------------------------
+    //------------->HOME<-------------
+    // -------------------------------
     @GetMapping
     public String dives(Model model) {
         Map<String, List<DiveViewModel>> dives = new LinkedHashMap<>();
@@ -55,12 +59,14 @@ public class DivesController {
     //---------------------------------
     //--------------ADD----------------
     //---------------------------------
+    @Secured("ROLE_ADMIN")
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("levels", DiveLevelEnum.values());
         return "dive-add";
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/add")
     public String addConfirm(@Valid DiveAddBindingModel diveAddBindingModel,
                              BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -83,7 +89,7 @@ public class DivesController {
     //------------DETAILS--------------
     //---------------------------------
     //todo: fix the design for details page
-    @GetMapping("/details/{id}")
+    @GetMapping("/{id}/details")
     public String details(@PathVariable String id, Model model) {
         DiveDetailsViewModel dive = modelMapper.map(diveService.findById(id), DiveDetailsViewModel.class);
 
@@ -99,7 +105,8 @@ public class DivesController {
     //--------------------------------
     //------------>DELETE<------------
     //--------------------------------
-    @DeleteMapping("/details/{id}")
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/{id}/details")
     public String detailsDelete(@PathVariable String id) {
         diveService.deleteDive(id);
         return "redirect:/services/dives";
@@ -109,7 +116,8 @@ public class DivesController {
     //------------->EDIT<-------------
     //--------------------------------
     //todo: fix edit page with js
-    @GetMapping("/edit/{id}")
+    @Secured({"ROLE_ADMIN","ROLE_ADMINISTRATOR"})
+    @GetMapping("/{id}/edit")
     public String edit(@PathVariable String id, Model model) {
         model.addAttribute("diveEdit",
                         modelMapper.map(diveService.findById(id), DiveEditViewModel.class))
@@ -117,16 +125,20 @@ public class DivesController {
         return "dive-edit";
     }
 
-    @PatchMapping("/edit/{id}")
+    @Secured({"ROLE_ADMIN","ROLE_ADMINISTRATOR"})
+    @PatchMapping("/{id}/edit")
     public String editConfirm(@Valid DiveEditBindingModel diveEditBindingModel, BindingResult bindingResult,
                               RedirectAttributes redirectAttributes, @PathVariable String id) {
+
+        // todo: what if the new name/type/ is the same as the previous name/type/?
+
         if (bindingResult.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute("diveEditBindingModel", diveEditBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.diveEditBindingModel",
                             bindingResult);
 
-            return "redirect:/services/dives/edit/"+id;
+            return "redirect:/services/dives/" + id + "/edit";
         }
 
         diveService.editDive(modelMapper.map(diveEditBindingModel, DiveServiceModel.class));

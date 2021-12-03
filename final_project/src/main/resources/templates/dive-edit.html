@@ -14,74 +14,80 @@
     <div class="row justify-content-center mb-4">
         <div class="col-4">
             <form
-                    th:action="@{/services/dives/edit/{id}(id = ${diveEdit.id})}"
+                    th:action="@{/services/dives/{id}/edit(id = ${diveEdit.id})}"
                     th:method="PATCH"
                     th:object="${diveEditBindingModel}">
                 <div class="mb-3">
-                    <label for="exampleInputCourseName1" class="form-label">Dive Name</label>
+                    <label for="exampleInputDiveType1" class="form-label">Dive Type</label>
                     <input
                             th:field="*{type}"
                             th:errorclass="is-invalid"
                             th:placeholder="${diveEdit.type}"
-                            id="exampleInputCourseName1"
+                            id="exampleInputDiveType1"
                             type="text"
                             class="form-control"
-                            aria-describedby="courseNameHelpInLine">
+                            aria-describedby="diveTypeHelpInLine">
                     <small
                             th:if="${#fields.hasErrors('type')}"
                             th:errors="*{type}"
-                            id="courseNameHelpInLine"
+                            id="diveTypeHelpInLine"
                             class="invalid-feedback bg-danger text-light rounded">
                         Please fill in a name.
                     </small>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputCourseLevel1" class="form-label">Course Level</label>
+                    <label for="exampleInputDiveLevel1" class="form-label">Dive Level</label>
                     <select
                             th:field="*{level}"
                             th:errorclass="is-invalid"
                             type="text"
                             class="form-control"
-                            id="exampleInputCourseLevel1"
-                            aria-describedby="courseLevelHelpInLine">
+                            id="exampleInputDiveLevel1"
+                            aria-describedby="diveLevelHelpInLine">
                         <option selected th:value="${diveEdit.level}" th:text="${diveEdit.level}"></option>
                         <option th:each="l : ${levels}" th:value="${l}" th:text="${l}"></option>
                     </select>
                     <small
-                            id="courseLevelHelpInLine"
+                            th:if="${#fields.hasErrors('level')}"
+                            th:errors="*{level}"
+                            id="diveLevelHelpInLine"
                             class="invalid-feedback bg-danger text-light rounded">
                         Please fill in a level.
                     </small>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputCourseDescription1" class="form-label">Course Description</label>
+                    <label for="exampleInputDiveDescription1" class="form-label">Dive Description</label>
                     <textarea
                             th:field="*{description}"
                             th:errorclass="is-invalid"
                             th:placeholder="${diveEdit.description}"
                             type=""
                             class="form-control"
-                            id="exampleInputCourseDescription1"
-                            aria-describedby="courseDescriptionHelpInLine">
+                            id="exampleInputDiveDescription1"
+                            aria-describedby="diveDescriptionHelpInLine">
                             </textarea>
                     <small
-                            id="courseDescriptionHelpInLine"
+                            th:if="${#fields.hasErrors('description')}"
+                            th:errors="*{description}"
+                            id="diveDescriptionHelpInLine"
                             class="invalid-feedback bg-danger text-light rounded">
                         Please fill in a description.
                     </small>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputCourseImageUrl1" class="form-label">Course Name</label>
+                    <label for="exampleInputDiveImageUrl1" class="form-label">Dive Image Url</label>
                     <input
                             th:field="*{imageUrl}"
                             th:errorclass="is-invalid"
                             th:placeholder="${diveEdit.imageUrl}"
                             type="text"
                             class="form-control"
-                            id="exampleInputCourseImageUrl1"
-                            aria-describedby="courseImageUrlHelpInLine">
+                            id="exampleInputDiveImageUrl1"
+                            aria-describedby="diveImageUrlHelpInLine">
                     <small
-                            id="courseImageUrlHelpInLine"
+                            th:if="${#fields.hasErrors('imageUrl')}"
+                            th:errors="*{imageUrl}"
+                            id="diveImageUrlHelpInLine"
                             class="invalid-feedback bg-danger text-light rounded">
                         Please fill in a name.
                     </small>

@@ -47,12 +47,12 @@
                 <div class="col">
                     <h4>Username</h4>
                 </div>
-                <div class="col">
-                    <h4>Full Name</h4>
-                </div>
-                <div class="col">
-                    <h4>Email</h4>
-                </div>
+<!--                <div class="col">-->
+<!--                    <h4>Full Name</h4>-->
+<!--                </div>-->
+<!--                <div class="col">-->
+<!--                    <h4>Email</h4>-->
+<!--                </div>-->
                 <div class="col">
                     <h4>Role</h4>
                 </div>
@@ -65,14 +65,14 @@
                 <div class="col">
                     <h5 th:text="${user.username}">Username</h5>
                 </div>
+<!--                <div class="col">-->
+<!--                    <h5 th:text="|${user.firstName} ${user.lastName}|">Full Name</h5>-->
+<!--                </div>-->
+<!--                <div class="col">-->
+<!--                    <h5 th:text="${user.email}">Email</h5>-->
+<!--                </div>-->
                 <div class="col">
-                    <h5 th:text="|${user.firstName} ${user.lastName}|">Full Name</h5>
-                </div>
-                <div class="col">
-                    <h5 th:text="${user.email}">Email</h5>
-                </div>
-                <div class="col">
-                    <h5 th:text="${user.role.getRole().name()}">Role</h5>
+                    <h5 th:text="${user.role.getRole().name().toLowerCase()}">Role</h5>
                 </div>
                 <div class="col">
                     <form
@@ -94,9 +94,11 @@
                                     id="exampleInputUserRole1"
                                     aria-describedby="userRoleHelpInLine">
                                 <option selected value="">You may choose a new role</option>
-                                <option th:each="r : ${roles}" th:value="${r}" th:text="${r.name()}"></option>
+                                <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
                             </select>
                             <small
+                                    th:if="${#fields.hasErrors('role')}"
+                                    th:errors="*{role}"
                                     id="userRoleHelpInLine"
                                     class="invalid-feedback bg-danger text-light rounded">
                                 Please choose a role.

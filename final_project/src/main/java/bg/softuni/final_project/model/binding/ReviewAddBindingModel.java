@@ -8,7 +8,7 @@ public class ReviewAddBindingModel {
     public ReviewAddBindingModel() {
     }
 
-    @NotBlank
+    @NotBlank(message = "You need to enter a message.")
     public String getMessage() {
         return message;
     }

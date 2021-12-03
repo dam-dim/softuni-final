@@ -4,6 +4,7 @@ import bg.softuni.final_project.model.entity.UserEntity;
 import bg.softuni.final_project.model.entity.UserRoleEntity;
 import bg.softuni.final_project.model.entity.enums.UserRoleEnum;
 import bg.softuni.final_project.model.service.UserServiceModel;
+import bg.softuni.final_project.repository.ReviewRepository;
 import bg.softuni.final_project.repository.UserRepository;
 import bg.softuni.final_project.repository.UserRoleRepository;
 import bg.softuni.final_project.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -25,10 +27,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final UserRoleRepository userRoleRepository;
+    private final ReviewRepository reviewRepository;
     private final PasswordEncoder passwordEncoder;
     private final FinalProjectUserServiceImpl finalProjectUserService;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, FinalProjectUserServiceImpl finalProjectUserService) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, UserRoleRepository userRoleRepository, ReviewRepository reviewRepository, PasswordEncoder passwordEncoder, FinalProjectUserServiceImpl finalProjectUserService) {
+        this.reviewRepository = reviewRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.userRoleRepository = userRoleRepository;
@@ -100,7 +104,7 @@ public class UserServiceImpl implements UserService {
                     .setFirstName("Damyan")
                     .setLastName("Dimov")
                     .setEmail("ddimov99@mail.bg")
-                    .setRoles(Set.of(adminRole));
+                    .setRoles(Set.of(adminRole, administratorRole));
             userRepository.save(admin);
 
             UserEntity administrator = new UserEntity();
@@ -155,7 +159,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserServiceModel> findAllNotAdmin() {
-        return mapListToService(findAllNotAdminEntity());
+        UserRoleEntity adminRole = userRoleRepository.findByRole(UserRoleEnum.ADMIN);
+
+        return mapListToService(userRepository.findAllByRoleNot(adminRole));
     }
 
     @Override
@@ -172,14 +178,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(String id) {
+        reviewRepository.deleteAllByAuthorId(id);
         userRepository.deleteById(id);
     }
 
     @Override
-    public List<UserEntity> findAllNotAdminEntity() {
-        UserRoleEntity adminRole = userRoleRepository.findByRole(UserRoleEnum.ADMIN);
-        return userRepository.findAllByRolesNotContaining(adminRole);
+    public List<UserEntity> findAllUsersWithRole(UserRoleEnum roleEnum) {
+        UserRoleEntity userRole = userRoleRepository.findByRole(roleEnum);
+
+        return userRepository.findAllByRole(userRole);
     }
 
     // list from entity -> service

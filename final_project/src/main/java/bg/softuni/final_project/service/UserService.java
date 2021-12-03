@@ -3,6 +3,7 @@ package bg.softuni.final_project.service;
 import bg.softuni.final_project.model.entity.UserEntity;
 import bg.softuni.final_project.model.entity.enums.UserRoleEnum;
 import bg.softuni.final_project.model.service.UserServiceModel;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -25,5 +26,5 @@ public interface UserService {
 
     void deleteUser(String id);
 
-    List<UserEntity> findAllNotAdminEntity();
+    List<UserEntity> findAllUsersWithRole(UserRoleEnum roleEnum);
 }

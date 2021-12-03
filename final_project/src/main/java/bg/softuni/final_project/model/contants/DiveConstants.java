@@ -23,9 +23,9 @@ public class DiveConstants {
     );
 
     public static final List<String> INIT_DIVE_DESCRIPTIONS = List.of(
-            "Try Dive",
-            "Reck Dive",
-            "Night Dive",
-            "Deep Dive"
+            "Description for Try Dive",
+            "Description for Reck Dive",
+            "Description for Night Dive",
+            "Description for Deep Dive"
     );
 }

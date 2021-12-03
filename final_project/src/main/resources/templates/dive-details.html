@@ -16,14 +16,16 @@
             <div class="col">
                 <img th:src="*{imageUrl}" class="img-fluid" alt="">
             </div>
-            <div class="col">
+            <div class="col-lg-6 col-sm-12">
                 <h3><b>Level: </b> <th:block th:text="*{level}"></th:block></block></h3>
                 <h3><b>Description: </b></h3> <p th:text="*{description}"></p>
-                <th:block sec:authorize="hasRole('ADMIN')">
-                    <form th:action="@{/services/dives/details/{id}(id=*{id})}" th:method="DELETE">
-                        <input type="submit" class="btn btn-outline-danger" value="Delete">
-                    </form>
-                    <a th:href="@{/services/dives/edit/{id}(id=*{id})}" class="btn btn-outline-warning">Edit</a>
+                <th:block sec:authorize="hasRole('ADMINISTRATOR')">
+                    <th:block sec:authorize="hasRole('ADMIN')">
+                        <form th:action="@{/services/dives/{id}/details(id=*{id})}" th:method="DELETE">
+                            <input type="submit" class="btn btn-outline-danger" value="Delete">
+                        </form>
+                    </th:block>
+                    <a th:href="@{/services/dives/{id}/edit(id=*{id})}" class="btn btn-outline-warning">Edit</a>
                 </th:block>
             </div>
         </div>

@@ -21,5 +21,8 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     Optional<UserEntity> findByUsernameIgnoreCase(String username);
 
     @Query("SELECT u FROM UserEntity u WHERE :role NOT MEMBER OF u.roles")
-    List<UserEntity> findAllByRolesNotContaining(@Param("role") UserRoleEntity role);
+    List<UserEntity> findAllByRoleNot(@Param("role") UserRoleEntity role);
+
+    @Query("SELECT u FROM UserEntity u WHERE :role MEMBER OF u.roles")
+    List<UserEntity> findAllByRole(@Param("role") UserRoleEntity role);
 }

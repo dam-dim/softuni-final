@@ -3,8 +3,11 @@ package bg.softuni.final_project.model.binding;
 import bg.softuni.final_project.model.entity.enums.CourseLevelEnum;
 import bg.softuni.final_project.model.validator.course_name.UniqueCourseName;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class CourseAddBindingModel {
 
@@ -16,7 +19,8 @@ public class CourseAddBindingModel {
     }
 
     @UniqueCourseName
-    @NotBlank(message = "Course name cannot be blank.")
+    @NotNull(message = "Course name is required.")
+    @Size(min = 3, max = 30, message = "Course name should be between 3 and 30 characters long.")
     public String getName() {
         return name;
     }
@@ -26,7 +30,8 @@ public class CourseAddBindingModel {
         return this;
     }
 
-    @NotNull
+    @NotNull(message = "Course level is required.")
+    @Enumerated(EnumType.STRING)
     public CourseLevelEnum getLevel() {
         return level;
     }
@@ -36,7 +41,8 @@ public class CourseAddBindingModel {
         return this;
     }
 
-    @NotBlank
+    @NotNull(message = "Course description is required.")
+    @Size(min = 20, message = "Course description should be minimum 20 characters long.")
     public String getDescription() {
         return description;
     }

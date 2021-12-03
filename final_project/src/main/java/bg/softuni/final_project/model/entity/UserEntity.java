@@ -3,6 +3,8 @@ package bg.softuni.final_project.model.entity;
 import bg.softuni.final_project.model.entity.enums.UserRoleEnum;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,10 +23,11 @@ public class UserEntity extends BaseEntity{
 
     public UserEntity() {
         roles = new HashSet<>();
-        reviews = new HashSet<>();
     }
 
     @Column(name = "first_name", nullable = false)
+    @NotNull
+    @Size(min = 2, max = 15)
     public String getFirstName() {
         return firstName;
     }
@@ -35,6 +38,8 @@ public class UserEntity extends BaseEntity{
     }
 
     @Column(name = "last_name", nullable = false)
+    @NotNull
+    @Size(min = 2, max = 15)
     public String getLastName() {
         return lastName;
     }
@@ -45,6 +50,8 @@ public class UserEntity extends BaseEntity{
     }
 
     @Column(name = "username", nullable = false, unique = true)
+    @NotNull
+    @Size(min = 3, max = 15)
     public String getUsername() {
         return username;
     }
@@ -55,6 +62,7 @@ public class UserEntity extends BaseEntity{
     }
 
     @Column(name = "password", nullable = false)
+    @NotNull
     public String getPassword() {
         return password;
     }
@@ -65,6 +73,7 @@ public class UserEntity extends BaseEntity{
     }
 
     @Column(name = "email", nullable = false)
+    @NotNull
     public String getEmail() {
         return email;
     }
@@ -84,7 +93,7 @@ public class UserEntity extends BaseEntity{
         return this;
     }
 
-    @OneToMany
+    @OneToMany(mappedBy = "author")
     public Set<ReviewEntity> getReviews() {
         return reviews;
     }

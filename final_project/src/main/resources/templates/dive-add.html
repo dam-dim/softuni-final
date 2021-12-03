@@ -45,6 +45,8 @@
                             <option th:each="l : ${levels}" th:value="${l}" th:text="${l}"></option>
                         </select>
                         <small
+                                th:if="${#fields.hasErrors('level')}"
+                                th:errors="*{level}"
                                 id="diveLevelHelpInLine"
                                 class="invalid-feedback bg-danger text-light rounded">
                             Please fill in a level.
@@ -61,6 +63,8 @@
                                 aria-describedby="diveDescriptionHelpInLine">
                         </textarea>
                         <small
+                                th:if="${#fields.hasErrors('description')}"
+                                th:errors="*{description}"
                                 id="diveDescriptionHelpInLine"
                                 class="invalid-feedback bg-danger text-light rounded">
                             Please fill in a description.
