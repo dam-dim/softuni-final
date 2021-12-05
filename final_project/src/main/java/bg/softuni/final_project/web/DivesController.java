@@ -2,21 +2,18 @@ package bg.softuni.final_project.web;
 
 import bg.softuni.final_project.model.binding.DiveAddBindingModel;
 import bg.softuni.final_project.model.binding.DiveEditBindingModel;
-import bg.softuni.final_project.model.entity.enums.CourseLevelEnum;
 import bg.softuni.final_project.model.entity.enums.DiveLevelEnum;
 import bg.softuni.final_project.model.service.DiveServiceModel;
-import bg.softuni.final_project.model.view.*;
+import bg.softuni.final_project.model.view.DiveDetailsViewModel;
+import bg.softuni.final_project.model.view.DiveViewModel;
 import bg.softuni.final_project.service.DiveService;
 import bg.softuni.final_project.web.exception.DiveNotFoundException;
-import bg.softuni.final_project.web.exception.ServiceNotFoundException;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -44,7 +41,7 @@ public class DivesController {
         Map<String, List<DiveViewModel>> dives = new LinkedHashMap<>();
 
         for (DiveLevelEnum levelEnum : DiveLevelEnum.values()) {
-            dives.put(levelEnum.name().toLowerCase(),
+            dives.put(levelEnum.name(),
                     diveService
                             .findAllByLevel(levelEnum)
                             .stream()
@@ -88,7 +85,6 @@ public class DivesController {
     //---------------------------------
     //------------DETAILS--------------
     //---------------------------------
-    //todo: fix the design for details page
     @GetMapping("/{id}/details")
     public String details(@PathVariable String id, Model model) {
         DiveDetailsViewModel dive = modelMapper.map(diveService.findById(id), DiveDetailsViewModel.class);
@@ -115,44 +111,47 @@ public class DivesController {
     //--------------------------------
     //------------->EDIT<-------------
     //--------------------------------
-    //todo: fix edit page with js
     @Secured({"ROLE_ADMIN","ROLE_ADMINISTRATOR"})
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable String id, Model model) {
-        model.addAttribute("diveEdit",
-                        modelMapper.map(diveService.findById(id), DiveEditViewModel.class))
+        model.addAttribute("diveModel",
+                        modelMapper.map(diveService.findById(id), DiveEditBindingModel.class))
                 .addAttribute("levels", DiveLevelEnum.values());
+
+        diveService.setCurrentEditDiveType(diveService.findById(id).getType());
+        return "dive-edit";
+    }
+
+    @GetMapping("/{id}/edit/errors")
+    public String editOfferErrors(@PathVariable String id, Model model) {
+        model.addAttribute("levels", DiveLevelEnum.values());
         return "dive-edit";
     }
 
     @Secured({"ROLE_ADMIN","ROLE_ADMINISTRATOR"})
     @PatchMapping("/{id}/edit")
-    public String editConfirm(@Valid DiveEditBindingModel diveEditBindingModel, BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes, @PathVariable String id) {
-
-        // todo: what if the new name/type/ is the same as the previous name/type/?
+    public String editConfirm(
+            @PathVariable String id,
+            @Valid DiveEditBindingModel diveModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes
-                    .addFlashAttribute("diveEditBindingModel", diveEditBindingModel)
-                    .addFlashAttribute("org.springframework.validation.BindingResult.diveEditBindingModel",
+                    .addFlashAttribute("diveModel", diveModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.diveModel",
                             bindingResult);
 
-            return "redirect:/services/dives/" + id + "/edit";
+            return "redirect:/services/dives/" + id + "/edit/errors";
         }
 
-        diveService.editDive(modelMapper.map(diveEditBindingModel, DiveServiceModel.class));
+        diveService.editDive(modelMapper.map(diveModel, DiveServiceModel.class));
 
-        return "redirect:/services/dives";
+        return "redirect:/services/dives/"+id+"/details";
     }
 
     @ModelAttribute
     public DiveAddBindingModel diveAddBindingModel() {
         return new DiveAddBindingModel();
-    }
-
-    @ModelAttribute
-    public DiveEditBindingModel diveEditBindingModel() {
-        return new DiveEditBindingModel();
     }
 }

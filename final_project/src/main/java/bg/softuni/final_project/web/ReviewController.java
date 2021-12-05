@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -78,13 +77,13 @@ public class ReviewController {
         return viewModel;
     }
 
-    @Secured("ROLE_USER")
+    @Secured({"ROLE_USER"})
     @GetMapping("/add")
     public String add() {
         return "review-add";
     }
 
-    @Secured("ROLE_USER")
+    @Secured({"ROLE_USER"})
     @PostMapping("/add")
     public String addConfirm(@Valid ReviewAddBindingModel reviewAddBindingModel,
                              BindingResult bindingResult,
@@ -113,7 +112,7 @@ public class ReviewController {
         return serviceModel;
     }
 
-    @PreAuthorize("@reviewServiceImpl.isOwner(#principal.name, #id)")
+    @PreAuthorize("@reviewServiceImpl.canDelete(#principal.name, #id)")
     @DeleteMapping("/{id}/delete")
     public String deleteConfirm(@PathVariable String id, Principal principal) {
         reviewService.deleteReview(id);

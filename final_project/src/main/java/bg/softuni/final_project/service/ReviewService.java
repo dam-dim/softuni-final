@@ -17,4 +17,6 @@ public interface ReviewService {
     boolean isOwner(String authorName, String reviewId);
 
     void initialiseReviews();
+
+    boolean canDelete(String name, String id);
 }

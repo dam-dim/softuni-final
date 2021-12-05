@@ -10,12 +10,22 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class CourseEditBindingModel {
+    private String id;
     private String name;
     private String description;
     private String imageUrl;
     private CourseLevelEnum level;
 
     public CourseEditBindingModel() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public CourseEditBindingModel setId(String id) {
+        this.id = id;
+        return this;
     }
 
     @NotNull(message = "Course name is required.")

@@ -6,6 +6,7 @@ import bg.softuni.final_project.model.entity.UserRoleEntity;
 import bg.softuni.final_project.model.entity.enums.UserRoleEnum;
 import bg.softuni.final_project.model.service.ReviewServiceModel;
 import bg.softuni.final_project.repository.ReviewRepository;
+import bg.softuni.final_project.repository.UserRoleRepository;
 import bg.softuni.final_project.service.ReviewService;
 import bg.softuni.final_project.service.UserService;
 import bg.softuni.final_project.web.exception.ReviewNotFoundException;
@@ -25,11 +26,13 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final UserRoleRepository userRoleRepository;
 
-    public ReviewServiceImpl(ReviewRepository reviewRepository, UserService userService, ModelMapper modelMapper) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, UserService userService, ModelMapper modelMapper, UserRoleRepository userRoleRepository) {
         this.reviewRepository = reviewRepository;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
@@ -75,7 +78,6 @@ public class ReviewServiceImpl implements ReviewService {
     public boolean isOwner(String authorName, String reviewId) {
         UserEntity userEntity = userService.findUserByUsername(authorName);
 
-
         return userEntity.getId()
                 .equals(reviewRepository
                         .findById(reviewId)
@@ -97,5 +99,10 @@ public class ReviewServiceImpl implements ReviewService {
                 reviewRepository.save(reviewEntity);
             }
         }
+    }
+
+    @Override
+    public boolean canDelete(String name, String id) {
+        return isOwner(name, id);
     }
 }

@@ -191,6 +191,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAllByRole(userRole);
     }
 
+    @Override
+    public boolean isAdmin(String name) {
+        UserRoleEntity adminRole = userRoleRepository.findByRole(UserRoleEnum.ADMIN);
+        return findUserByUsername(name).getRoles().contains(adminRole);
+    }
+
     // list from entity -> service
     private List<UserServiceModel> mapListToService(List<UserEntity> userEntities) {
         return userEntities

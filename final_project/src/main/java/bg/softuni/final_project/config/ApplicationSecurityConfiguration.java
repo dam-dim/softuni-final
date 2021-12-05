@@ -30,7 +30,12 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                          "/admin",
                          "/services/courses/add",
                          "/services/dives/add").hasRole(UserRoleEnum.ADMIN.name())
-                .antMatchers("/reviews/add").hasRole(UserRoleEnum.USER.name())
+                 .antMatchers("/reviews/add").hasRole(UserRoleEnum.USER.name())
+                 .antMatchers(
+                         "/services/courses/*/edit",
+                         "/services/courses/*/edit/errors",
+                         "/services/dives/*/edit",
+                         "/services/dives/*/edit/errors").hasAnyRole(UserRoleEnum.ADMIN.name(), UserRoleEnum.ADMINISTRATOR.name())
                  .antMatchers(
                          "/",
                          "/users/*",

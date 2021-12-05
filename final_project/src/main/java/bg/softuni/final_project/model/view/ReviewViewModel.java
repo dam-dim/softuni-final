@@ -1,7 +1,5 @@
 package bg.softuni.final_project.model.view;
 
-import java.time.LocalDateTime;
-
 public class ReviewViewModel {
     private String username;
     private String firstName;
@@ -13,6 +11,7 @@ public class ReviewViewModel {
     private boolean isOwner;
 
     public ReviewViewModel() {
+
     }
 
     public String getUsername() {

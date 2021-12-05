@@ -21,13 +21,14 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="|${review.firstName} ${review.lastName}|"></h5>
                         <p class="card-text" th:text="${review.message}"></p>
-                        <form
-                                sec:authorize="hasRole('USER')"
-                                th:if="${review.isOwner}"
-                                th:action="@{/reviews/{id}/delete(id=*{review.id})}"
-                                th:method="DELETE">
-                            <input type="submit" class="btn btn-outline-danger" value="Delete">
-                        </form>
+                        <th:block th:if="${review.isOwner}">
+                            <form
+                                    th:action="@{/reviews/{id}/delete(id=*{review.id})}"
+                                    th:method="DELETE">
+                                <input type="submit" class="btn btn-outline-danger" value="Delete">
+                            </form>
+                        </th:block>
+
                     </div>
                     <div class="card-footer">
                         <small class="text-muted" th:text="|Posted on: ${review.postedOn}|"></small>

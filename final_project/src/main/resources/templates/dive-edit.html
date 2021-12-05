@@ -14,15 +14,14 @@
     <div class="row justify-content-center mb-4">
         <div class="col-4">
             <form
-                    th:action="@{/services/dives/{id}/edit(id = ${diveEdit.id})}"
+                    th:action="@{/services/dives/{id}/edit(id = *{id})}"
                     th:method="PATCH"
-                    th:object="${diveEditBindingModel}">
+                    th:object="${diveModel}">
                 <div class="mb-3">
                     <label for="exampleInputDiveType1" class="form-label">Dive Type</label>
                     <input
                             th:field="*{type}"
                             th:errorclass="is-invalid"
-                            th:placeholder="${diveEdit.type}"
                             id="exampleInputDiveType1"
                             type="text"
                             class="form-control"
@@ -38,14 +37,18 @@
                 <div class="mb-3">
                     <label for="exampleInputDiveLevel1" class="form-label">Dive Level</label>
                     <select
-                            th:field="*{level}"
                             th:errorclass="is-invalid"
+                            name="level"
                             type="text"
                             class="form-control"
                             id="exampleInputDiveLevel1"
                             aria-describedby="diveLevelHelpInLine">
-                        <option selected th:value="${diveEdit.level}" th:text="${diveEdit.level}"></option>
-                        <option th:each="l : ${levels}" th:value="${l}" th:text="${l}"></option>
+                        <option
+                                th:each="l : ${levels}"
+                                th:value="${l}"
+                                th:text="${l}"
+                                th:selected="${l} == *{level}">
+                        </option>
                     </select>
                     <small
                             th:if="${#fields.hasErrors('level')}"
@@ -60,8 +63,6 @@
                     <textarea
                             th:field="*{description}"
                             th:errorclass="is-invalid"
-                            th:placeholder="${diveEdit.description}"
-                            type=""
                             class="form-control"
                             id="exampleInputDiveDescription1"
                             aria-describedby="diveDescriptionHelpInLine">
@@ -79,7 +80,6 @@
                     <input
                             th:field="*{imageUrl}"
                             th:errorclass="is-invalid"
-                            th:placeholder="${diveEdit.imageUrl}"
                             type="text"
                             class="form-control"
                             id="exampleInputDiveImageUrl1"
@@ -89,7 +89,7 @@
                             th:errors="*{imageUrl}"
                             id="diveImageUrlHelpInLine"
                             class="invalid-feedback bg-danger text-light rounded">
-                        Please fill in a name.
+                        Please fill in a url.
                     </small>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>

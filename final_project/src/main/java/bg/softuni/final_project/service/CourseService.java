@@ -2,6 +2,7 @@ package bg.softuni.final_project.service;
 
 import bg.softuni.final_project.model.entity.enums.CourseLevelEnum;
 import bg.softuni.final_project.model.service.CourseServiceModel;
+import bg.softuni.final_project.service.impl.CourseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,8 @@ public interface CourseService {
 
     boolean isCourseNameFree(String courseName);
 
+    boolean isCourseNameFreeEdit(String courseName);
+
     void editCourse(CourseServiceModel courseServiceModel, String id);
 
     void onRequest(HttpServletRequest request);
@@ -29,4 +32,8 @@ public interface CourseService {
     List<CourseServiceModel> getSortedPopularCourses();
 
     void initialiseCourseClicks();
+
+    boolean isNewCourseNameEqualToCurrent(String courseName);
+
+    void setCurrentEditCourseName(String currentEditCourseName);
 }

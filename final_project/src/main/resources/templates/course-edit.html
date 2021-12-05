@@ -14,15 +14,14 @@
         <div class="row justify-content-center mb-4">
             <div class="col-4">
                 <form
-                        th:action="@{/services/courses/{id}/edit(id=${courseEdit.id})}"
+                        th:action="@{/services/courses/{id}/edit(id=*{id})}"
                         th:method="PATCH"
-                        th:object="${courseEditBindingModel}">
+                        th:object="${courseModel}">
                     <div class="mb-3">
                         <label for="exampleInputCourseName1" class="form-label">Course Name</label>
                         <input
                                 th:field="*{name}"
                                 th:errorclass="is-invalid"
-                                th:placeholder="${courseEdit.name}"
                                 id="exampleInputCourseName1"
                                 type="text"
                                 class="form-control"
@@ -38,14 +37,18 @@
                     <div class="mb-3">
                         <label for="exampleInputCourseLevel1" class="form-label">Course Level</label>
                         <select
-                                th:field="*{level}"
                                 th:errorclass="is-invalid"
                                 type="text"
+                                name="level"
                                 class="form-control"
                                 id="exampleInputCourseLevel1"
                                 aria-describedby="courseLevelHelpInLine">
-                            <option selected th:value="${courseEdit.level}" th:text="${courseEdit.level}"></option>
-                            <option th:each="l : ${levels}" th:value="${l}" th:text="${l}"></option>
+                            <option
+                                    th:each="l : ${levels}"
+                                    th:value="${l}"
+                                    th:text="${l}"
+                                    th:selected="${l} == *{level}">
+                            </option>
                         </select>
                         <small
                                 th:if="${#fields.hasErrors('level')}"
@@ -60,7 +63,6 @@
                         <textarea
                                 th:field="*{description}"
                                 th:errorclass="is-invalid"
-                                th:placeholder="${courseEdit.description}"
                                 type=""
                                 class="form-control"
                                 id="exampleInputCourseDescription1"
@@ -79,7 +81,6 @@
                         <input
                                 th:field="*{imageUrl}"
                                 th:errorclass="is-invalid"
-                                th:placeholder="${courseEdit.imageUrl}"
                                 type="text"
                                 class="form-control"
                                 id="exampleInputCourseImageUrl1"

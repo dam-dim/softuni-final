@@ -1,11 +1,10 @@
 package bg.softuni.final_project.web;
 
-import  bg.softuni.final_project.model.binding.CourseAddBindingModel;
+import bg.softuni.final_project.model.binding.CourseAddBindingModel;
 import bg.softuni.final_project.model.binding.CourseEditBindingModel;
 import bg.softuni.final_project.model.entity.enums.CourseLevelEnum;
 import bg.softuni.final_project.model.service.CourseServiceModel;
 import bg.softuni.final_project.model.view.CourseDetailsViewModel;
-import bg.softuni.final_project.model.view.CourseEditViewModel;
 import bg.softuni.final_project.model.view.CourseViewModel;
 import bg.softuni.final_project.service.CourseService;
 import org.modelmapper.ModelMapper;
@@ -18,7 +17,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -40,7 +41,7 @@ public class CoursesController {
         Map<String, List<CourseViewModel>> courses = new LinkedHashMap<>();
 
         for (CourseLevelEnum levelEnum : CourseLevelEnum.values()) {
-            courses.put(levelEnum.name().toLowerCase(),
+            courses.put(levelEnum.name(),
                     courseService
                             .findAllByLevel(levelEnum)
                             .stream()
@@ -55,7 +56,6 @@ public class CoursesController {
     //-----------------------------------
     //------------->DETAILS<-------------
     //-----------------------------------
-    //todo: fix the design for details page
     @GetMapping("/{id}/details")
     public String details(@PathVariable String id, Model model) {
 
@@ -68,7 +68,7 @@ public class CoursesController {
     //------------------------------
     //----------->DELETE<-----------
     //------------------------------
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN"})
     @DeleteMapping("/{id}/details")
     public String detailsDelete(@PathVariable String id) {
         courseService.deleteCourse(id);
@@ -78,14 +78,13 @@ public class CoursesController {
     //-------------------------------
     //------------->ADD<-------------
     //-------------------------------
-    @Secured("ROLE_ADMIN")
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("levels", CourseLevelEnum.values());
         return "course-add";
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN"})
     @PostMapping("/add")
     public String addConfirm(@Valid CourseAddBindingModel courseAddBindingModel,
                              BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -107,35 +106,42 @@ public class CoursesController {
     //--------------------------------
     //------------->EDIT<-------------
     //--------------------------------
-    //todo: fix edit page with js
-    @Secured({"ROLE_ADMIN", "ROLE_ADMINISTRATOR"})
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable String id, Model model) {
-        model.addAttribute("courseEdit",
-                modelMapper.map(courseService.findById(id), CourseEditViewModel.class))
+        model.addAttribute("courseModel",
+                        modelMapper.map(courseService.findById(id), CourseEditBindingModel.class))
                 .addAttribute("levels", CourseLevelEnum.values());
+
+        courseService.setCurrentEditCourseName(courseService.findById(id).getName());
+        return "course-edit";
+    }
+
+    @GetMapping("/{id}/edit/errors")
+    public String editOfferErrors(@PathVariable String id, Model model) {
+        model.addAttribute("levels", CourseLevelEnum.values());
         return "course-edit";
     }
 
     @Secured({"ROLE_ADMIN", "ROLE_ADMINISTRATOR"})
     @PatchMapping("/{id}/edit")
-    public String editConfirm(@Valid CourseEditBindingModel courseEditBindingModel, BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes, @PathVariable String id) {
-
-        // todo: what if the new name/type/ is the same as the previous name/type/?
+    public String editConfirm(
+            @PathVariable String id,
+            @Valid CourseEditBindingModel courseModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes
-                    .addFlashAttribute("courseEditBindingModel", courseEditBindingModel)
-                    .addFlashAttribute("org.springframework.validation.BindingResult.courseEditBindingModel",
+                    .addFlashAttribute("courseModel", courseModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.courseModel",
                             bindingResult);
 
-            return "redirect:/services/courses/" + id +"/edit";
+            return "redirect:/services/courses/" + id +"/edit/errors";
         }
 
-        courseService.editCourse(modelMapper.map(courseEditBindingModel, CourseServiceModel.class), id);
+        courseService.editCourse(modelMapper.map(courseModel, CourseServiceModel.class), id);
 
-        return "redirect:/services/courses";
+        return "redirect:/services/courses/"+id+"/details";
     }
 
     //--------------------------------
@@ -144,10 +150,5 @@ public class CoursesController {
     @ModelAttribute
     public CourseAddBindingModel serviceCourseAddBindingModel() {
         return new CourseAddBindingModel();
-    }
-
-    @ModelAttribute
-    public CourseEditBindingModel courseEditBindingModel() {
-        return new CourseEditBindingModel();
     }
 }

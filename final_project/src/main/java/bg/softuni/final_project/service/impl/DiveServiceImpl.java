@@ -17,6 +17,8 @@ import static bg.softuni.final_project.model.contants.DiveConstants.*;
 
 @Service
 public class DiveServiceImpl implements DiveService {
+    private String currentEditDiveType = "";
+
     private final DiveRepository diveRepository;
     private final ModelMapper modelMapper;
 
@@ -98,5 +100,19 @@ public class DiveServiceImpl implements DiveService {
                 .setImageUrl(diveServiceModel.getImageUrl());
 
         diveRepository.save(diveEntity);
+    }
+
+    @Override
+    public boolean isNewDiveTypeEqualToCurrent(String diveType) {
+        return getCurrentEditDiveType().equals(diveType);
+    }
+
+    @Override
+    public void setCurrentEditDiveType(String type) {
+        this.currentEditDiveType = type;
+    }
+
+    public String getCurrentEditDiveType() {
+        return currentEditDiveType;
     }
 }

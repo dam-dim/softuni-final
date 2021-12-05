@@ -10,12 +10,22 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class DiveEditBindingModel {
+    private String id;
     private String type;
     private String description;
     private String imageUrl;
     private CourseLevelEnum level;
 
     public DiveEditBindingModel() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public DiveEditBindingModel setId(String id) {
+        this.id = id;
+        return this;
     }
 
     @UniqueDiveType

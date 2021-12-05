@@ -46,7 +46,7 @@ public class AdminController {
         return "admin";
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN"})
     @PatchMapping("/{id}")
     public String changeRole(@Valid AdminBindingModel adminBindingModel,
                              BindingResult bindingResult,
@@ -56,7 +56,7 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute("adminBindingModel", adminBindingModel)
-                    .addFlashAttribute("org.springframework.validation.BindingResult", bindingResult);
+                    .addFlashAttribute("org.springframework.validation.BindingResult.adminBindingModel", bindingResult);
 
             return "redirect:/admin";
         }
@@ -66,7 +66,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN"})
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable String id) {
         userService.deleteUser(id);

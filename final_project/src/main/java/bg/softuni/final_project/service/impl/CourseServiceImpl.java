@@ -20,6 +20,7 @@ import static bg.softuni.final_project.model.contants.CourseConstants.*;
 @Service
 public class CourseServiceImpl implements CourseService {
     private Map<String, Integer> courseCounter;
+    private String currentEditCourseName = "";
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseServiceImpl.class);
 
     private final CourseRepository courseRepository;
@@ -92,6 +93,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public boolean isCourseNameFreeEdit(String courseName) {
+        return courseRepository.findAllByName(courseName).size() == 1 || courseRepository.findAllByName(courseName).size() == 0;
+    }
+
+    @Override
     public void editCourse(CourseServiceModel courseServiceModel, String id) {
         CourseEntity courseEntity = courseRepository
                 .findById(id)
@@ -144,8 +150,6 @@ public class CourseServiceImpl implements CourseService {
             courseServiceModel.setClicks(courseCounter.get(courseId));
 
             popularCourses.add(courseServiceModel);
-
-            LOGGER.info("{}\t: {}", courseServiceModel.getName(), courseServiceModel.getClicks());
         }
 
         return popularCourses
@@ -173,5 +177,19 @@ public class CourseServiceImpl implements CourseService {
                 .stream()
                 .limit(n)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void setCurrentEditCourseName(String currentEditCourseName) {
+        this.currentEditCourseName = currentEditCourseName;
+    }
+
+    public String getCurrentEditCourseName() {
+        return currentEditCourseName;
+    }
+
+    @Override
+    public boolean isNewCourseNameEqualToCurrent(String courseName) {
+        return getCurrentEditCourseName().equals(courseName);
     }
 }

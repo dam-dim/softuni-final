@@ -5,8 +5,8 @@ import bg.softuni.final_project.model.entity.enums.CourseLevelEnum;
 public class CourseServiceModel {
     private String id;
     private String name;
-    private CourseLevelEnum level;
     private String description;
+    private CourseLevelEnum level;
     private String imageUrl;
     private int clicks;
 

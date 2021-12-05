@@ -1,5 +1,6 @@
 package bg.softuni.final_project.service;
 
+import bg.softuni.final_project.model.entity.DiveEntity;
 import bg.softuni.final_project.model.entity.enums.DiveLevelEnum;
 import bg.softuni.final_project.model.service.DiveServiceModel;
 import org.springframework.stereotype.Service;
@@ -20,4 +21,8 @@ public interface DiveService {
     boolean isDiveTypeFree(String diveType);
 
     void editDive(DiveServiceModel diveServiceModel);
+
+    boolean isNewDiveTypeEqualToCurrent(String diveType);
+
+    void setCurrentEditDiveType(String diveType);
 }

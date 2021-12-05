@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head::head">
 </head>
@@ -31,12 +31,13 @@
                                 th:if="${#fields.hasErrors('message')}"
                                 th:errors="*{message}"
                                 id="firstNameHelpInline"
-                                class="invalid-feedback bg-danger text-light rounded">
+                                class="invalid-feedback bg-danger text-light rounded p-1">
                             You must enter a message.
                         </small>
-                        <button type="submit" class="btn btn-outline-primary">Submit</button>
+                        <button type="submit" class="btn btn-outline-primary mt-1">Submit</button>
                     </div>
                 </form>
+                <br><br><br><br><br><br><br>
             </div>
         </div>
     </div>

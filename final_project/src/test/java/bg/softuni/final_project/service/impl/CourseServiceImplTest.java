@@ -31,22 +31,24 @@ class CourseServiceImplTest {
 
     @BeforeEach
     public void init() {
+        courseService = new CourseServiceImpl(mockedCourseRepository, modelMapper);
+
         testCourse = new CourseEntity()
                 .setName(COURSE_NAME)
                 .setLevel(COURSE_LEVEL)
                 .setDescription(COURSE_DESCRIPTION)
                 .setImageUrl(COURSE_IMAGE_URL);
-
-        courseService = new CourseServiceImpl(mockedCourseRepository, modelMapper);
     }
 
     @Test
-    public void testIsCourseNameFreeShouldThrow() {
-        courseService.isCourseNameFree("sadsad");
+    public void testIsCourseNameFreeShouldReturnFalse() {
+        Assertions.assertFalse(courseService.isCourseNameFree(COURSE_NAME));
     }
 
     @Test
     public void testIsCourseNameFreeShouldWork() {
-        Assertions.assertFalse(courseService.isCourseNameFree(COURSE_NAME));
+        Assertions.assertTrue(courseService.isCourseNameFree("sadsad"));
     }
+
+
 }

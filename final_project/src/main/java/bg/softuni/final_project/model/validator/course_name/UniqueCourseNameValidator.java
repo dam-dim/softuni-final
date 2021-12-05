@@ -14,7 +14,7 @@ public class UniqueCourseNameValidator implements ConstraintValidator<UniqueCour
 
     @Override
     public boolean isValid(String courseName, ConstraintValidatorContext context) {
-        if (courseName == null) {
+        if (courseName == null || courseService.isNewCourseNameEqualToCurrent(courseName)) {
             return true;
         }
 

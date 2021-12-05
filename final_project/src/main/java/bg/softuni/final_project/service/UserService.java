@@ -27,4 +27,6 @@ public interface UserService {
     void deleteUser(String id);
 
     List<UserEntity> findAllUsersWithRole(UserRoleEnum roleEnum);
+
+    boolean isAdmin(String name);
 }

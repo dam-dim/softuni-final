@@ -14,7 +14,7 @@ public class UniqueDiveNameValidator implements ConstraintValidator<UniqueDiveTy
 
     @Override
     public boolean isValid(String diveType, ConstraintValidatorContext context) {
-        if (diveType == null) {
+        if (diveType == null || diveService.isNewDiveTypeEqualToCurrent(diveType)) {
             return true;
         }
 
