@@ -65,6 +65,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void deleteCourse(String id) {
+        courseCounter.remove(id);
         courseRepository.deleteById(id);
     }
 

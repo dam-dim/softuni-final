@@ -1,9 +1,6 @@
 package bg.softuni.final_project.init;
 
-import bg.softuni.final_project.service.CourseService;
-import bg.softuni.final_project.service.DiveService;
-import bg.softuni.final_project.service.ReviewService;
-import bg.softuni.final_project.service.UserService;
+import bg.softuni.final_project.service.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +10,14 @@ public class DBInit implements CommandLineRunner {
     private final CourseService courseService;
     private final DiveService diveService;
     private final ReviewService reviewService;
+    private final WeatherService weatherService;
 
-    public DBInit(UserService userService, CourseService courseService, DiveService diveService, ReviewService reviewService) {
+    public DBInit(UserService userService, CourseService courseService, DiveService diveService, ReviewService reviewService, WeatherService weatherService) {
         this.userService = userService;
         this.courseService = courseService;
         this.diveService = diveService;
         this.reviewService = reviewService;
+        this.weatherService = weatherService;
     }
 
     @Override
@@ -28,5 +27,6 @@ public class DBInit implements CommandLineRunner {
         courseService.initialiseCourseClicks();
         diveService.initialiseDives();
         reviewService.initialiseReviews();
+        weatherService.writeWeatherToJson();
     }
 }

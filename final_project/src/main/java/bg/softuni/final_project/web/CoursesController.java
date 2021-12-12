@@ -8,6 +8,7 @@ import bg.softuni.final_project.model.view.CourseDetailsViewModel;
 import bg.softuni.final_project.model.view.CourseViewModel;
 import bg.softuni.final_project.service.CourseService;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Role;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,7 +69,7 @@ public class CoursesController {
     //------------------------------
     //----------->DELETE<-----------
     //------------------------------
-    @Secured({"ROLE_ADMIN"})
+    @RolesAllowed({"ROLE_ADMIN"})
     @DeleteMapping("/{id}/details")
     public String detailsDelete(@PathVariable String id) {
         courseService.deleteCourse(id);
